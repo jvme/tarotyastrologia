@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+<title>Barra de navegación de la aplicación tarot</title>
+</head>
+<body>
+	<!--Navbar-->
+	<nav class="navbar navbar-expand-lg fixed-top navbar-tarot" th:fragment="header">
+
+		<!-- Navbar brand -->
+		<a class="navbar-brand" href="#">
+			<img th:src="@{/img/solmig2.gif}" height="30" alt="Tarot y astrología">
+			Tarot y astrolog&iacute;a
+		</a>
+
+		<!-- Collapse button -->
+		<button class="navbar-toggler" type="button" data-toggle="collapse"	data-target="#navBarMenu" aria-controls="navBarMenu"
+			aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+
+		<!-- Collapsible content -->
+		<div class="collapse navbar-collapse" id="navBarMenu">
+			<!-- Links -->
+			<ul class="navbar-nav mr-auto">
+				<li th:classappend="${module == 'home' ? 'active' : ''}" class="nav-item">
+					<a class="nav-link" href="#" th:href="@{/}">Home<span class="sr-only">(current)</span>
+					</a>
+				</li>
+				<li th:classappend="${module == 'horoscopos' ? 'active' : ''}" class="nav-item">
+					<a class="nav-link" href="horoscopos.html" th:href="@{/horoscopos}">Hor&oacute;scopos</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#">Features</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#">Pricing</a>
+				</li>
+				<!-- Dropdown -->
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink"	data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Dropdown</a>
+					<div class="dropdown-menu dropdown-primary"	aria-labelledby="navbarDropdownMenuLink">
+						<a class="dropdown-item" href="#">Action</a>
+						<a class="dropdown-item" href="#">Another action</a>
+						<a class="dropdown-item" href="#">Something else here</a>
+					</div>
+				</li>
+			</ul>
+			<!-- Links -->
+
+			<form class="form-inline">
+				<div class="md-form my-0">
+					<input class="form-control mr-sm-2" type="text"
+						placeholder="Search" aria-label="Search">
+				</div>
+			</form>
+		</div>
+		<!-- Collapsible content -->
+
+	</nav>
+	<!--/.Navbar-->
+
+	<div class="starter-template" th:fragment="starter-template">
+		<h1>Spring Boot Web Thymeleaf Example</h1>
+		<h2>
+			<span th:text="'Hello, ' + ${message}"></span>
+		</h2>
+		<h3 th:text="${module}">MODULE</h3>
+	</div>
+
+</body>
+</html>

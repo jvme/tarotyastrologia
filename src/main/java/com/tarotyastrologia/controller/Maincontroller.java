@@ -21,8 +21,16 @@ public class Maincontroller {
     public String main(Model model) {
         model.addAttribute("message", message);
         model.addAttribute("tasks", tasks);
-
+        model.addAttribute("module", "home");
         return "welcome"; //view
+    }
+
+    @GetMapping("/horoscopos")
+    public String horoscopos(Model model) {
+        model.addAttribute("message", message);
+        model.addAttribute("tasks", tasks);
+        model.addAttribute("module", "horoscopos");
+        return "horoscopos"; //view
     }
 
     // /hello?name=kotlin
