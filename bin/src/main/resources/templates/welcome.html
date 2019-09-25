@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Tarot y Astrología</title>
+<link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css" />
+<link rel="stylesheet" th:href="@{/css/main.css}" />
+</head>
+<body>
+	<div th:replace="fragments/header::header">
+	</div>
+	<main role="main" class="container">
+	<div class="row">
+		<div class="col-lg-4"></div>
+		<div class="col-lg-2"></div>
+	</div>
+	<div th:replace="fragments/header::starter-template"></div>
+	<ol>
+		<li th:each="task : ${tasks}" th:text="${task}"></li>
+	</ol>
+	</main>
+	<!-- /.container -->
+	<script src="/webjars/jquery/jquery.min.js"></script>
+	<script type="text/javascript" src="webjars/bootstrap/js/bootstrap.min.js"></script>
+</body>
+</html>

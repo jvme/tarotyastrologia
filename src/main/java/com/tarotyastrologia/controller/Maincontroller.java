@@ -22,7 +22,7 @@ public class Maincontroller {
         model.addAttribute("message", message);
         model.addAttribute("tasks", tasks);
         model.addAttribute("module", "home");
-        return "welcome"; //view
+        return "index"; //view
     }
 
     @GetMapping("/horoscopos")

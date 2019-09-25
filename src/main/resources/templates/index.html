@@ -1,0 +1,78 @@
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	layout:decorate="~{fragments/main_layout}">
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Tarot y Astrología</title>
+<link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css" />
+<link rel="stylesheet" th:href="@{/css/main.css}" />
+</head>
+<body>
+	<div layout:fragment="content" class="container">
+		<div class="row">
+			<div class="col">
+				<div class="card">
+					<img th:src="@{/img/fotoliaPareja12x12.jpg}" class="card-img-top">
+					<div class="card-body">
+						<h5 class="card-title">Astrolog&iacute;a</h5>
+						<p class="card-text">A través de la astrología podemos conocer
+							la compatibilidad entre las personas, identificar cuales son los
+							puntos débiles y los puntos fuertes en una relación. Con lo cual,
+							tendremos a nuestra disposición la forma para saber con quien nos
+							entendemos mejor y como se manifiesta esa afinidad, ya sea a
+							través de los sentimientos, de la manera de expresarnos y de
+							comportarnos, respecto a la otra persona. Ello nos permite
+							valorar mejor nuestras relaciones</p>
+						<div class="container">
+							<div class="row">
+								<div class="col-6">
+									<div class="media">
+										<img th:src="@{/img/compatibilidad.gif}" class="mr-3"
+											alt="Relaciones entre signos">
+										<div class="media-body">
+											<h5 class="mt-0">Relaciones entre signos</h5>
+										</div>
+									</div>
+								</div>
+								<div class="col-6">
+									<div class="media">
+										<img th:src="@{/img/simb-8.gif}" class="mr-3"
+											alt="Conozca sobre su horóscopo chino">
+										<div class="media-body">
+											<h5 class="mt-0">Conozca sobre su horóscopo chino</h5>
+										</div>
+									</div>
+								</div>
+								<div class="col-6">
+									<div class="media">
+										<img th:src="@{/img/padres.gif}" class="mr-3"
+											alt="Relaciones Padres e Hijos">
+										<div class="media-body">
+											<h5 class="mt-0">Relaciones Padres e Hijos</h5>
+										</div>
+									</div>
+								</div>
+								<div class="col-6">
+									<div class="media">
+										<img th:src="@{/img/3p.gif}" class="mr-3"
+											alt="Calcule su  Ascendente">
+										<div class="media-body">
+											<h5 class="mt-0">Calcule su Ascendente</h5>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="col">
+				<div th:replace="fragments/cartanatal::cartanatal">
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
