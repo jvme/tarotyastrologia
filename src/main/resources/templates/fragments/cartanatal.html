@@ -7,7 +7,35 @@
 <body>
 	<div th:fragment="cartanatal">
 		<script type="text/javascript">
-				$('#datetimepicker1').datepicker();
+		$( function() {
+				$('#fechaNacimiento').datepicker();
+				$.widget( "ui.timespinner", $.ui.spinner, {
+				      options: {
+				        // seconds
+				        step: 60 * 1000,
+				        // hours
+				        page: 60
+				      },
+				 
+				      _parse: function( value ) {
+				        if ( typeof value === "string" ) {
+				          // already a timestamp
+				          if ( Number( value ) == value ) {
+				            return Number( value );
+				          }
+				          return +Globalize.parseDate( value );
+				        }
+				        return value;
+				      },
+				 
+				      _format: function( value ) {
+				        return Globalize.format( new Date(value), "t" );
+				      }
+				    });
+				 
+				    $( "#spinner" ).timespinner();
+			}
+		);
 		</script>
 		<div class="card">
 			<h5 class="card-header">Astrolog&iacute;a</h5>
@@ -18,46 +46,26 @@
 						<label for="nombreApellidos">Nombre y apellidos</label> <input
 							type="text" class="form-control" id="nombreApellidos"
 							aria-describedby="nombreHelp" placeholder="Nombre y apellidos">
-						<small id="nombreHelp" class="form-text text-muted">Introduce
-							tu nombre o el de la persona a la que quieras calcular su carta
-							astral</small>
 					</div>
 					<div class="form-group">
-						<label for="fechaNacimiento">Fecha de nacimiento</label> <input
-							type=text class="form-control" id="fechaNacimiento"
-							placeholder="dd/mm/aaaa" />
-						<div class="input-group-addon">
-							<span class="glyphicon glyphicon-th"></span>
-						</div>
+						<label for="fechaNacimiento">Fecha de nacimiento</label>
+						<input type=text class="form-control" id="fechaNacimiento" placeholder="dd/mm/aaaa" />
 					</div>
 					<div class="form-group">
-						<div class="input-group date" data-provide="datepicker">
-							<input type="text" class="form-control">
-							<div class="input-group-addon">
-								<span class="glyphicon glyphicon-th"></span>
-							</div>
-						</div>
+						<label for="spinner">Hora y minutos</label>
+						
 					</div>
 					<div class="form-group">
-						<div class="input-group date" id="datetimepicker1"
-							data-target-input="nearest">
-							<input type="text" class="form-control datetimepicker-input"
-								data-target="#datetimepicker1" />
-							<div class="input-group-append" data-target="#datetimepicker1"
-								data-toggle="datetimepicker">
-								<div class="input-group-text">
-									<i class="fa fa-calendar"></i>
-								</div>
-							</div>
-						</div>
+						<label for="pais">País</label>
+						<input type=text class="form-control" id="pais" placeholder="hh:mm" />
 					</div>
-					<div class="form-group form-check">
-						<input type="checkbox" class="form-check-input" id="exampleCheck1">
-						<label class="form-check-label" for="exampleCheck1">Check
-							me out</label>
+					<div class="form-group">
+						<label for="horaMinutos">Ciudad</label>
+						<input type=text class="form-control" id="ciudad" placeholder="hh:mm" />
 					</div>
 					<button type="submit" class="btn btn-primary">Ver carta</button>
 				</form>
+				<input type=text  id="spinner" placeholder="hh:mm" />
 			</div>
 		</div>
 	</div>
