@@ -10,8 +10,14 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import at.kugel.zodiac.TextHoroscop;
+import at.kugel.zodiac.house.HousePlacidus;
+import at.kugel.zodiac.planet.PlanetAA0;
+import cz.kibo.api.astrology.builder.CuspBuilder;
 import cz.kibo.api.astrology.builder.PlanetBuilder;
+import cz.kibo.api.astrology.domain.Cusp;
 import cz.kibo.api.astrology.domain.Planet;
+import swisseph.SweConst;
 
 @Controller
 public class Maincontroller {
@@ -55,10 +61,110 @@ public class Maincontroller {
   				.topo(lon, lat, 0)
   				.build();
 				
-		String json = planetEphemeris.toJSON();
+		String jsonplanetEphemeris = planetEphemeris.toJSON();
 
+		Cusp cuspEphemeris = new CuspBuilder(event)
+  				.houses("Placidus")
+  				.topo(lon, lat, 0)
+    			//.zodiac("Fagan Bradley")	
+ 				.build();
+		
+		String jsoncuspEphemeris = cuspEphemeris.toJSON();		
     	
-        model.addAttribute("planetEphemeris", json);
+		cuspEphemeris = new CuspBuilder(event)
+  				.houses("Koch")
+  				.topo(lon, lat, 0)
+    			//.zodiac("Fagan Bradley")	
+ 				.build();
+		
+		jsoncuspEphemeris += cuspEphemeris.toJSON();
+		
+		cuspEphemeris = new CuspBuilder(event)
+  				.houses("Porphyrius")
+  				.topo(lon, lat, 0)
+    			//.zodiac("Fagan Bradley")	
+ 				.build();
+		
+		jsoncuspEphemeris += cuspEphemeris.toJSON();
+		cuspEphemeris = new CuspBuilder(event)
+  				.houses("Regiomontanus")
+  				.topo(lon, lat, 0)
+    			//.zodiac("Fagan Bradley")	
+ 				.build();
+		
+		jsoncuspEphemeris += cuspEphemeris.toJSON();
+
+		cuspEphemeris = new CuspBuilder(event)
+  				.houses("Campanus")
+  				.topo(lon, lat, 0)
+    			//.zodiac("Fagan Bradley")	
+ 				.build();
+		
+		jsoncuspEphemeris += cuspEphemeris.toJSON();
+
+		cuspEphemeris = new CuspBuilder(event)
+  				.houses("Equal")
+  				.topo(lon, lat, 0)
+    			//.zodiac("Fagan Bradley")	
+ 				.build();
+		
+		jsoncuspEphemeris += cuspEphemeris.toJSON();
+		
+		cuspEphemeris = new CuspBuilder(event)
+  				.houses("Vehlow Equal")
+  				.topo(lon, lat, 0)
+    			//.zodiac("Fagan Bradley")	
+ 				.build();
+		
+		jsoncuspEphemeris += cuspEphemeris.toJSON();
+
+		cuspEphemeris = new CuspBuilder(event)
+  				.houses("Whole")
+  				.topo(lon, lat, 0)
+    			//.zodiac("Fagan Bradley")	
+ 				.build();
+		
+		jsoncuspEphemeris += cuspEphemeris.toJSON();
+
+		cuspEphemeris = new CuspBuilder(event)
+  				.houses("Horizontal")
+  				.topo(lon, lat, 0)
+    			//.zodiac("Fagan Bradley")	
+ 				.build();
+		
+		jsoncuspEphemeris += cuspEphemeris.toJSON();
+		
+        model.addAttribute("planetEphemeris", jsonplanetEphemeris);
+        model.addAttribute("cuspEphemeris", jsoncuspEphemeris);
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+     // get a horoscop instance
+        TextHoroscop horoscop = new TextHoroscop();
+        // set your desired planet position calculation algorithm
+        horoscop.setPlanet(new PlanetAA0());
+        // set your desired house system calculation algorithm
+        // may be anything from the at.kugel.zodiac.house package.
+        horoscop.setHouse(new HousePlacidus());
+        // set your user data time value
+        horoscop.setTime(1, 1, 1980, Integer.parseInt(hh), Integer.parseInt(mm), 0, 0);
+        // set your user data location value
+        horoscop.setLocationDegree(2.17, 41.35);
+        // calculate the values
+        horoscop.calcValues();
+        // do something with the data, e.g. output raw data
+        String horoscoptxt = horoscop.toString();
+        
+        model.addAttribute("horoscoptxt", horoscoptxt);
+        
+        
         return "efemerides"; //view
     }
     

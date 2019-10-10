@@ -1,12 +1,26 @@
-<!DOCTYPE html>
-<html>
+<!DOCTYPE HTML>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-<meta charset="ISO-8859-1">
-<title>Insert title here</title>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, shrink-to-fit=no">
+<title>Tarot y Astrología</title>
+<link rel="stylesheet" href="/webjars/bootstrap/css/bootstrap.min.css" />
+<link rel="stylesheet" th:href="@{/css/main.css}" />
 </head>
 <body>
-<div class="container">
-${planetEphemeris}
-</div>
+	<div th:replace="fragments/header::header"></div>
+	<main role="main" class="container">
+		<div class="row">
+			<div class="col" th:text="${planetEphemeris}">Planet Efemérides
+			</div>
+		</div>
+		<div class="row">
+			<div class="col" th:text="${cuspEphemeris}">Cusp Ephemeris</div>
+		</div>
+		<div class="row">
+			<div class="col" th:text="${horoscoptxt}">Horóscopo</div>
+		</div>
+	</main>
 </body>
 </html>
