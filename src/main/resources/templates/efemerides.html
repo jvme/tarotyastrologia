@@ -1,6 +1,7 @@
 <!DOCTYPE HTML>
-<html lang="en" xmlns:th="http://www.thymeleaf.org">
-<head>
+
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	layout:decorate="~{fragments/main_layout}"><head>
 <meta charset="utf-8">
 <meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -9,8 +10,25 @@
 <link rel="stylesheet" th:href="@{/css/main.css}" />
 </head>
 <body>
-	<div th:replace="fragments/header::header"></div>
-	<main role="main" class="container">
+
+	<div layout:fragment="content" class="container">
+
+		<script th:inline="javascript">
+			window.onload = function() {
+				var data = /*[[${data}]]*/[];
+				var chart = new astrology.Chart('paper', 800, 800);
+				chart.radix(data);
+
+				radix.addPointsOfInterest({
+					"As" : [ data.cusps[0] ],
+					"Ic" : [ data.cusps[3] ],
+					"Ds" : [ data.cusps[6] ],
+					"Mc" : [ data.cusps[9] ]
+				});
+				radix.aspects();
+			};
+		</script>
+
 		<div class="row">
 			<div class="col" th:text="${planetEphemeris}">Planet Efemérides
 			</div>
@@ -21,6 +39,9 @@
 		<div class="row">
 			<div class="col" th:text="${horoscoptxt}">Horóscopo</div>
 		</div>
-	</main>
+		<div class="row">
+			<div class="col" id="paper"></div>
+		</div>
+	</div>
 </body>
 </html>
