@@ -68,10 +68,9 @@ public class Maincontroller {
   				.topo(lon, lat, 0)
     			//.zodiac("Fagan Bradley")	
  				.build();
-		
 		String jsoncuspEphemeris = cuspEphemeris.toJSON();		
     	
-		cuspEphemeris = new CuspBuilder(event)
+	/*	cuspEphemeris = new CuspBuilder(event)
   				.houses("Koch")
   				.topo(lon, lat, 0)
     			//.zodiac("Fagan Bradley")	
@@ -133,6 +132,7 @@ public class Maincontroller {
  				.build();
 		
 		jsoncuspEphemeris += cuspEphemeris.toJSON();
+		*/
 		
         model.addAttribute("planetEphemeris", jsonplanetEphemeris);
         model.addAttribute("cuspEphemeris", jsoncuspEphemeris);
