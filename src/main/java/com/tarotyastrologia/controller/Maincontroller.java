@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
 
+import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,151 +18,105 @@ import cz.kibo.api.astrology.builder.CuspBuilder;
 import cz.kibo.api.astrology.builder.PlanetBuilder;
 import cz.kibo.api.astrology.domain.Cusp;
 import cz.kibo.api.astrology.domain.Planet;
-import swisseph.SweConst;
+import cz.kibo.api.astrology.json.Convertor;
 
 @Controller
 public class Maincontroller {
 	// inject via application.properties
-    @Value("${welcome.message}")
-    private String message;
+	@Value("${welcome.message}")
+	private String message;
 
-    private List<String> tasks = Arrays.asList("a", "b", "c", "d", "e", "f", "g");
+	private List<String> tasks = Arrays.asList("a", "b", "c", "d", "e", "f", "g");
 
-    @GetMapping("/")
-    public String main(Model model) {
-        model.addAttribute("message", message);
-        model.addAttribute("tasks", tasks);
-        model.addAttribute("module", "home");
-        return "index"; //view
-    }
+	@GetMapping("/")
+	public String main(Model model) {
+		model.addAttribute("message", message);
+		model.addAttribute("tasks", tasks);
+		model.addAttribute("module", "home");
+		return "index"; // view
+	}
 
-    @GetMapping("/horoscopos")
-    public String horoscopos(Model model) {
-        model.addAttribute("message", message);
-        model.addAttribute("tasks", tasks);
-        model.addAttribute("module", "horoscopos");
-        return "horoscopos"; //view
-    }
+	@GetMapping("/horoscopos")
+	public String horoscopos(Model model) {
+		model.addAttribute("message", message);
+		model.addAttribute("tasks", tasks);
+		model.addAttribute("module", "horoscopos");
+		return "horoscopos"; // view
+	}
 
+	@GetMapping("/calcularhoroscopo")
+	public String calcularHoroscopo(@RequestParam(name = "lon", required = true, defaultValue = "") Double lon,
+			@RequestParam(name = "lat", required = true, defaultValue = "") Double lat,
+			@RequestParam(name = "yy", required = true, defaultValue = "") String yy,
+			@RequestParam(name = "mm", required = true, defaultValue = "") String mm,
+			@RequestParam(name = "dd", required = true, defaultValue = "") String dd,
+			@RequestParam(name = "hh", required = true, defaultValue = "") String hh,
+			@RequestParam(name = "mn", required = true, defaultValue = "") String mn, Model model) {
 
-    @GetMapping("/calcularhoroscopo")
-    public String calcularHoroscopo(
-    		@RequestParam(name = "lon", required = true, defaultValue = "") Double lon,
-    		@RequestParam(name = "lat", required = true, defaultValue = "") Double lat,
-    		@RequestParam(name = "yy", required = true, defaultValue = "") String yy,
-    		@RequestParam(name = "mm", required = true, defaultValue = "") String mm,
-    		@RequestParam(name = "dd", required = true, defaultValue = "") String dd,
-    		@RequestParam(name = "hh", required = true, defaultValue = "") String hh,
-    		@RequestParam(name = "mn", required = true, defaultValue = "") String mn,
-    		Model model) {
-    	
-    	LocalDateTime event = LocalDateTime.parse(yy+"-"+mm+"-"+dd+"T"+hh+":"+mn+":00");
-		Planet planetEphemeris = new PlanetBuilder(event)
-  				.planets() 					
-  				.topo(lon, lat, 0)
-  				.build();
-				
+		LocalDateTime event = LocalDateTime.parse(yy + "-" + mm + "-" + dd + "T" + hh + ":" + mn + ":00");
+		Planet planetEphemeris = new PlanetBuilder(event).planets().topo(lat, lon, 0).build();
+
 		String jsonplanetEphemeris = planetEphemeris.toJSON();
 
 		Cusp cuspEphemeris = new CuspBuilder(event)
   				.houses("Placidus")
-  				.topo(lon, lat, 0)
+  				.topo(lat, lon, 0)
     			//.zodiac("Fagan Bradley")	
  				.build();
 		String jsoncuspEphemeris = cuspEphemeris.toJSON();		
     	
-	/*	cuspEphemeris = new CuspBuilder(event)
-  				.houses("Koch")
-  				.topo(lon, lat, 0)
-    			//.zodiac("Fagan Bradley")	
- 				.build();
-		
-		jsoncuspEphemeris += cuspEphemeris.toJSON();
-		
-		cuspEphemeris = new CuspBuilder(event)
-  				.houses("Porphyrius")
-  				.topo(lon, lat, 0)
-    			//.zodiac("Fagan Bradley")	
- 				.build();
-		
-		jsoncuspEphemeris += cuspEphemeris.toJSON();
-		cuspEphemeris = new CuspBuilder(event)
-  				.houses("Regiomontanus")
-  				.topo(lon, lat, 0)
-    			//.zodiac("Fagan Bradley")	
- 				.build();
-		
-		jsoncuspEphemeris += cuspEphemeris.toJSON();
 
-		cuspEphemeris = new CuspBuilder(event)
-  				.houses("Campanus")
-  				.topo(lon, lat, 0)
+		LocalDateTime ahora = LocalDateTime.now();
+		Planet planetEphemerisHoy = new PlanetBuilder(ahora).planets().topo(lat, lon, 0).build();
+		Cusp cuspEphemerisHoy = new CuspBuilder(ahora)
+  				.houses("Placidus")
+  				.topo(lat, lon, 0)
     			//.zodiac("Fagan Bradley")	
  				.build();
 		
-		jsoncuspEphemeris += cuspEphemeris.toJSON();
+		Convertor conPlanets = new Convertor(planetEphemeris.getPlanets());
+		Convertor conCusp = new Convertor(cuspEphemeris.getCusps());
+		JSONObject jsonPlanets = conPlanets.getJSON();
+		JSONObject jsonCusp = conCusp.getJSON();
+		JSONObject planetsCusp = new JSONObject();
+		planetsCusp.put("planets", jsonPlanets.get("planets"));
+		planetsCusp.put("cusps", jsonCusp.get("cusps"));
+		
+		
+		Convertor conPlanetsHoy = new Convertor(planetEphemerisHoy.getPlanets());
+		Convertor conCuspHoy = new Convertor(cuspEphemerisHoy.getCusps());
+		JSONObject jsonPlanetsHoy = conPlanetsHoy.getJSON();
+		JSONObject jsonCuspHoy = conCuspHoy.getJSON();
+		JSONObject planetsCuspHoy = new JSONObject();
+		planetsCuspHoy.put("planets", jsonPlanetsHoy.get("planets"));
+		planetsCuspHoy.put("cusps", jsonCuspHoy.get("cusps"));
+		
+		
+		model.addAttribute("planetEphemeris", jsonplanetEphemeris);
+		model.addAttribute("cuspEphemeris", jsoncuspEphemeris);
+		model.addAttribute("data", planetsCusp.toString());
+		model.addAttribute("dataHoy", planetsCuspHoy.toString());
 
-		cuspEphemeris = new CuspBuilder(event)
-  				.houses("Equal")
-  				.topo(lon, lat, 0)
-    			//.zodiac("Fagan Bradley")	
- 				.build();
-		
-		jsoncuspEphemeris += cuspEphemeris.toJSON();
-		
-		cuspEphemeris = new CuspBuilder(event)
-  				.houses("Vehlow Equal")
-  				.topo(lon, lat, 0)
-    			//.zodiac("Fagan Bradley")	
- 				.build();
-		
-		jsoncuspEphemeris += cuspEphemeris.toJSON();
 
-		cuspEphemeris = new CuspBuilder(event)
-  				.houses("Whole")
-  				.topo(lon, lat, 0)
-    			//.zodiac("Fagan Bradley")	
- 				.build();
 		
-		jsoncuspEphemeris += cuspEphemeris.toJSON();
+		
+		// get a horoscop instance
+		TextHoroscop horoscop = new TextHoroscop();
+		// set your desired planet position calculation algorithm
+		horoscop.setPlanet(new PlanetAA0());
+		// set your desired house system calculation algorithm
+		// may be anything from the at.kugel.zodiac.house package.
+		horoscop.setHouse(new HousePlacidus());
+		// set your user data time value
+		horoscop.setTime(Integer.parseInt(dd), Integer.parseInt(mm), Integer.parseInt(yy), Integer.parseInt(hh), Integer.parseInt(mm), 0, 0);
+		// set your user data location value
+		horoscop.setLocationDegree(2.17, 41.35);
+		// calculate the values
+		horoscop.calcValues();
+		// do something with the data, e.g. output raw data
+		String horoscoptxt = horoscop.toString();
 
-		cuspEphemeris = new CuspBuilder(event)
-  				.houses("Horizontal")
-  				.topo(lon, lat, 0)
-    			//.zodiac("Fagan Bradley")	
- 				.build();
-		
-		jsoncuspEphemeris += cuspEphemeris.toJSON();
-		*/
-		
-        model.addAttribute("planetEphemeris", jsonplanetEphemeris);
-        model.addAttribute("cuspEphemeris", jsoncuspEphemeris);
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-     // get a horoscop instance
-        TextHoroscop horoscop = new TextHoroscop();
-        // set your desired planet position calculation algorithm
-        horoscop.setPlanet(new PlanetAA0());
-        // set your desired house system calculation algorithm
-        // may be anything from the at.kugel.zodiac.house package.
-        horoscop.setHouse(new HousePlacidus());
-        // set your user data time value
-        horoscop.setTime(1, 1, 1980, Integer.parseInt(hh), Integer.parseInt(mm), 0, 0);
-        // set your user data location value
-        horoscop.setLocationDegree(2.17, 41.35);
-        // calculate the values
-        horoscop.calcValues();
-        // do something with the data, e.g. output raw data
-        String horoscoptxt = horoscop.toString();
-        
+	    
         model.addAttribute("horoscoptxt", horoscoptxt);
         
         
