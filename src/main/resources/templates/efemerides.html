@@ -16,7 +16,7 @@
 	<script th:inline="javascript">
 		window.onload = function() {
 			var data = JSON.parse(/*[[${data}]]*/[]);
-			var dataHoy = JSON.parse(/*[[${dataHoy}]]*/[]);
+			//var dataHoy = JSON.parse(/*[[${dataHoy}]]*/[]);
 			var chart = new astrology.Chart('paper', 800, 800);
 			var radix = chart.radix(data);
 

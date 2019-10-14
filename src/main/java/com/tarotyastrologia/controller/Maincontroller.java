@@ -1,5 +1,7 @@
 package com.tarotyastrologia.controller;
 
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.List;
@@ -8,6 +10,7 @@ import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -19,6 +22,7 @@ import cz.kibo.api.astrology.builder.PlanetBuilder;
 import cz.kibo.api.astrology.domain.Cusp;
 import cz.kibo.api.astrology.domain.Planet;
 import cz.kibo.api.astrology.json.Convertor;
+import swisseph.SweConst;
 
 @Controller
 public class Maincontroller {
@@ -53,27 +57,27 @@ public class Maincontroller {
 			@RequestParam(name = "hh", required = true, defaultValue = "") String hh,
 			@RequestParam(name = "mn", required = true, defaultValue = "") String mn, Model model) {
 
+		
 		LocalDateTime event = LocalDateTime.parse(yy + "-" + mm + "-" + dd + "T" + hh + ":" + mn + ":00");
-		Planet planetEphemeris = new PlanetBuilder(event).planets().topo(lat, lon, 0).build();
+		Planet planetEphemeris = new PlanetBuilder(event).planets().topo(lon, lat, 0).build();
 
 		String jsonplanetEphemeris = planetEphemeris.toJSON();
 
 		Cusp cuspEphemeris = new CuspBuilder(event)
-  				.houses("Placidus")
-  				.topo(lat, lon, 0)
+  				.topo(lon, lat, 0)
     			//.zodiac("Fagan Bradley")	
  				.build();
 		String jsoncuspEphemeris = cuspEphemeris.toJSON();		
-    	
-
+		
+/*
 		LocalDateTime ahora = LocalDateTime.now();
-		Planet planetEphemerisHoy = new PlanetBuilder(ahora).planets().topo(lat, lon, 0).build();
+		Planet planetEphemerisHoy = new PlanetBuilder(ahora).planets().topo(lon, lat, 0).build();
 		Cusp cuspEphemerisHoy = new CuspBuilder(ahora)
   				.houses("Placidus")
-  				.topo(lat, lon, 0)
+  				.topo(lon, lat, 0)
     			//.zodiac("Fagan Bradley")	
  				.build();
-		
+*/		
 		Convertor conPlanets = new Convertor(planetEphemeris.getPlanets());
 		Convertor conCusp = new Convertor(cuspEphemeris.getCusps());
 		JSONObject jsonPlanets = conPlanets.getJSON();
@@ -82,7 +86,7 @@ public class Maincontroller {
 		planetsCusp.put("planets", jsonPlanets.get("planets"));
 		planetsCusp.put("cusps", jsonCusp.get("cusps"));
 		
-		
+/*	
 		Convertor conPlanetsHoy = new Convertor(planetEphemerisHoy.getPlanets());
 		Convertor conCuspHoy = new Convertor(cuspEphemerisHoy.getCusps());
 		JSONObject jsonPlanetsHoy = conPlanetsHoy.getJSON();
@@ -91,11 +95,11 @@ public class Maincontroller {
 		planetsCuspHoy.put("planets", jsonPlanetsHoy.get("planets"));
 		planetsCuspHoy.put("cusps", jsonCuspHoy.get("cusps"));
 		
-		
+	*/	
 		model.addAttribute("planetEphemeris", jsonplanetEphemeris);
 		model.addAttribute("cuspEphemeris", jsoncuspEphemeris);
 		model.addAttribute("data", planetsCusp.toString());
-		model.addAttribute("dataHoy", planetsCuspHoy.toString());
+		//model.addAttribute("dataHoy", planetsCuspHoy.toString());
 
 
 		
