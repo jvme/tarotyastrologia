@@ -162,12 +162,21 @@
 	astrology.COLLISION_RADIUS = 10; //px
 	
 	// Aspects	
-	astrology.ASPECTS = { 
+/*	astrology.ASPECTS = { 
 		"conjunction":{"degree":0, "orbit":10, "color":"#FF0000"}, 
 		"square":{"degree":90, "orbit":8, "color":"#FF4500"}, 
 		"trine":{"degree":120, "orbit":8, "color":"#27AE60"},
-		"opposition":{"degree":180, "orbit":10, "color":"#0000FF"}
+		"opposition":{"degree":180, "orbit":10, "color":"#0000FF"},
+		"sextile":{"degree":60, "orbit":8, "color":"#27AE60"},
 		};	
+*/	
+	astrology.ASPECTS = { 
+			"conjunction":{"degree":0, "orbit":14, "color":"#FF0000"}, 
+			"square":{"degree":90, "orbit":14, "color":"#FF4500"}, 
+			"trine":{"degree":120, "orbit":14, "color":"#27AE60"},
+			"opposition":{"degree":180, "orbit":14, "color":"#0000FF"},
+			"sextile":{"degree":60, "orbit":14, "color":"#27AE60"},
+			};	
 	
 	// Dignities
 	astrology.DIGNITIES_RULERSHIP = "r";			
@@ -2606,7 +2615,8 @@
 	function hasAspect(point, toPoint, aspect){
 		var result = false;
 		
-		var gap = Math.abs( point - toPoint );
+		//var gap = Math.abs( point - toPoint );
+		var gap = Math.round(Math.abs( point - toPoint ));
 		
 		if( gap > astrology.utils.radiansToDegree( Math.PI)){
 			gap = astrology.utils.radiansToDegree( 2 * Math.PI) - gap;
