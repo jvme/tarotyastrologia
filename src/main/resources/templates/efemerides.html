@@ -19,15 +19,51 @@
 			//var dataHoy = JSON.parse(/*[[${dataHoy}]]*/[]);
 			var chart = new astrology.Chart('paper', 800, 800);
 			var radix = chart.radix(data);
-
-			radix.addPointsOfInterest({
+			var aspects = radix.aspects();
+	/*		radix.addPointsOfInterest({
 				"As" : [ data.cusps[0] ],
 				"Ic" : [ data.cusps[3] ],
 				"Ds" : [ data.cusps[6] ],
 				"Mc" : [ data.cusps[9] ]
 			});
-			radix.aspects();
-	/*		
+		*/	
+
+		
+			
+			var lasp = new astrology.AspectCalculator(radix.toPoints, astrology.ASPECTS).radix(data.planets);
+			var a = 0;
+			var ul = document.createElement("ul");
+		    lasp.forEach(function(lAsp) {
+		      var li = document.createElement("li");
+	    	  var nul = document.createElement("ul");
+	    	  var liasp = document.createElement("li");
+	    	  liasp.appendChild(document.createTextNode("Aspecto:"));
+	    	  liasp.appendChild(document.createTextNode(lAsp["aspect"].name));
+	    	  liasp.appendChild(document.createTextNode(" grados:" + lAsp["aspect"].degree));
+	    	  liasp.appendChild(document.createTextNode(" orbit:" + lAsp["aspect"].orbit));
+	    	  nul.appendChild(liasp);
+	    	  var lpoint = document.createElement("li");
+	    	  lpoint.appendChild(document.createTextNode("Name:"));
+	    	  lpoint.appendChild(document.createTextNode(lAsp["point"].name));
+	    	  lpoint.appendChild(document.createTextNode(" position:" + lAsp["point"].position));
+	    	  nul.appendChild(lpoint);
+	    	  var lprecision = document.createElement("li");
+	    	  lprecision.appendChild(document.createTextNode("Precision:"));
+	    	  lprecision.appendChild(document.createTextNode(lAsp["precision"]));
+	    	  nul.appendChild(lprecision);
+	    	  var topoint = document.createElement("li");
+	    	  topoint.appendChild(document.createTextNode("Name:"));
+	    	  topoint.appendChild(document.createTextNode(lAsp["toPoint"].name));
+	    	  topoint.appendChild(document.createTextNode(" position:" + lAsp["toPoint"].position));
+	    	  nul.appendChild(topoint);
+	    	  li.appendChild(nul);
+	    	  ul.appendChild(li);
+		    });
+			document.getElementById("aspectos").appendChild(ul);			
+			
+			
+			
+			/*		
 			var chartHoy = new astrology.Chart('paperhoy', 800, 800);
 			var radixHoy = chartHoy.radix(data);
 			var transit = radixHoy.transit(dataHoy);
@@ -60,6 +96,9 @@
 		</div>
 		<div class="row">
 			<div class="col" id="paper"></div>
+		</div>
+		<div class="row">
+			<div class="col" id="aspectos"></div>
 		</div>
 		<div class="row">
 			<div class="col" id="paperhoy"></div>
