@@ -59,11 +59,13 @@ public class Maincontroller {
 
 		
 		LocalDateTime event = LocalDateTime.parse(yy + "-" + mm + "-" + dd + "T" + hh + ":" + mn + ":00");
-		Planet planetEphemeris = new PlanetBuilder(event).planets().topo(lon, lat, 0).build();
+		Planet planetEphemeris = new PlanetBuilder(event).planet("Sun, Moon, Mercury, Venus, Mars, Jupiter, Saturn, Uranus, Neptune, Pluto")
+				.topo(lon, lat, 0).build();
 
 		String jsonplanetEphemeris = planetEphemeris.toJSON();
 
 		Cusp cuspEphemeris = new CuspBuilder(event)
+				.houses("Placidus") 	
   				.topo(lon, lat, 0)
     			//.zodiac("Fagan Bradley")	
  				.build();

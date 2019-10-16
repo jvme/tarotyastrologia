@@ -19,18 +19,102 @@
 			//var dataHoy = JSON.parse(/*[[${dataHoy}]]*/[]);
 			var chart = new astrology.Chart('paper', 800, 800);
 			var radix = chart.radix(data);
-			var aspects = radix.aspects();
-	/*		radix.addPointsOfInterest({
+			radix.addPointsOfInterest({
 				"As" : [ data.cusps[0] ],
-				"Ic" : [ data.cusps[3] ],
-				"Ds" : [ data.cusps[6] ],
+				//"Ic" : [ data.cusps[3] ],
+				//"Ds" : [ data.cusps[6] ],
 				"Mc" : [ data.cusps[9] ]
 			});
-		*/	
-
+			var aspects = radix.aspects();	
 		
 			
+			
+			///
+			var tablaFila = {
+					Sun: {},
+					Moon: {},
+					Mercury: {},
+					Venus: {},
+					Mars: {},
+					Jupiter: {},
+					Saturn: {},
+					Uranus: {},
+					Neptune: {},
+					Pluto: {},
+					Chiron: {},
+					Lilith: {},
+					NNode: {},
+					As: {},
+					Mc: {}
+			};
+			
+			function tablaCol() {
+				return {
+					Sun: {},
+					Moon: {},
+					Mercury: {},
+					Venus: {},
+					Mars: {},
+					Jupiter: {},
+					Saturn: {},
+					Uranus: {},
+					Neptune: {},
+					Pluto: {},
+					Chiron: {},
+					Lilith: {},
+					NNode: {},
+					As: {},
+					Mc: {}
+				};
+			};
+
+			for (var filaKey in tablaFila) {
+				tablaFila[filaKey] = tablaCol();				
+			}
+			
+			
 			var lasp = new astrology.AspectCalculator(radix.toPoints, astrology.ASPECTS).radix(data.planets);
+			lasp.forEach(function(lAsp) {
+				tablaFila[lAsp.point.name][lAsp.toPoint.name] = lAsp;
+			});
+			
+			
+			var table = document.createElement("table");
+			var tr = document.createElement("tr");
+			var td = document.createElement("td");
+			tr.appendChild(td);
+			for (var filaKey in tablaFila) {
+				td = document.createElement("td");
+				td.appendChild(document.createTextNode(filaKey));
+				tr.appendChild(td);
+		    }
+			table.appendChild(tr);
+
+			for (var filaKey in tablaFila) {
+				tr = document.createElement("tr");
+				td = document.createElement("td");
+				td.appendChild(document.createTextNode(filaKey));
+				tr.appendChild(td);
+				for (var columKey in tablaFila[filaKey]) {
+					td = document.createElement("td");
+					var contenido = tablaFila[filaKey][columKey];
+					var texto = "";
+					if (contenido.aspect != undefined) {
+						texto = "Aspecto:" + contenido.aspect.name 
+						+ " Precision:" + contenido.precision
+						+ " grados:" + contenido.aspect.degree
+						+ " orbit:" + contenido.aspect.orbit
+						+ " de: " + contenido.point.name
+						+ " a: " + contenido.toPoint.name;
+					} 
+					td.appendChild(document.createTextNode(texto));
+					tr.appendChild(td);
+				}
+				table.appendChild(tr);
+		    }
+			document.getElementById("aspectos").appendChild(table);		
+			
+			/*
 			var a = 0;
 			var ul = document.createElement("ul");
 		    lasp.forEach(function(lAsp) {
@@ -61,7 +145,7 @@
 		    });
 			document.getElementById("aspectos").appendChild(ul);			
 			
-			
+			*/
 			
 			/*		
 			var chartHoy = new astrology.Chart('paperhoy', 800, 800);
