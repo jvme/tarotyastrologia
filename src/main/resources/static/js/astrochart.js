@@ -93,6 +93,7 @@
 	astrology.SYMBOL_CHIRON = "Chiron";
 	astrology.SYMBOL_LILITH = "Lilith";
 	astrology.SYMBOL_NNODE = "NNode";
+	astrology.SYMBOL_SNODE = "SNode";
 	
 	// Axis
 	astrology.SYMBOL_AS = "As";
@@ -289,6 +290,9 @@
 		        break;
 		    case astrology.SYMBOL_NNODE:		        
 		        return nnode( x, y);		        
+		        break;
+		    case astrology.SYMBOL_SNODE:		        
+		        return snode( x, y);		        
 		        break;
 		    case astrology.SYMBOL_ARIES:		        
 		        return aries( x, y);		        
@@ -815,6 +819,36 @@
 		return wrapper;
 	};
 	
+	/*
+	 * NNode path
+	 * @private
+	 * 
+	 * @param {int} x
+	 * @param {int} y	 
+	 * 
+	 * @return {SVGPathElement} path
+	 */
+	function snode( x, y ){
+		
+		// center symbol
+		var xShift = -2; //px						
+		var yShift = 3; //px		
+		x =  Math.round(x + (xShift * astrology.SYMBOL_SCALE));
+		y =  Math.round(y + (yShift * astrology.SYMBOL_SCALE));
+		
+		var wrapper = document.createElementNS(context.root.namespaceURI, "g");
+		wrapper.setAttribute("transform", "rotate(-180);translate(" + ( -x * (astrology.SYMBOL_SCALE - 1)) + "," + (-y * (astrology.SYMBOL_SCALE - 1)) + ") scale(" + astrology.SYMBOL_SCALE + ")");
+				
+			var node = document.createElementNS( context.root.namespaceURI, "path");
+			node.setAttribute("d", "m" + x + ", " + y + " -1.3333334,-0.6666667 -0.6666666,0 -1.3333334,0.6666667 -0.6666667,1.3333333 0,0.6666667 0.6666667,1.3333333 1.3333334,0.6666667 0.6666666,0 1.3333334,-0.6666667 0.6666666,-1.3333333 0,-0.6666667 -0.6666666,-1.3333333 -2,-2.66666665 -0.6666667,-1.99999995 0,-1.3333334 0.6666667,-2 1.3333333,-1.3333333 2,-0.6666667 2.6666666,0 2,0.6666667 1.3333333,1.3333333 0.6666667,2 0,1.3333334 -0.6666667,1.99999995 -2,2.66666665 -0.6666666,1.3333333 0,0.6666667 0.6666666,1.3333333 1.3333334,0.6666667 0.6666666,0 1.3333334,-0.6666667 0.6666667,-1.3333333 0,-0.6666667 -0.6666667,-1.3333333 -1.3333334,-0.6666667 -0.6666666,0 -1.3333334,0.6666667 m -7.9999999,-6 0.6666667,-1.3333333 1.3333333,-1.3333333 2,-0.6666667 2.6666666,0 2,0.6666667 1.3333333,1.3333333 0.6666667,1.3333333");				
+			node.setAttribute("stroke", astrology.POINTS_COLOR);		 
+			node.setAttribute("stroke-width", astrology.POINTS_STROKE);
+			node.setAttribute("fill", "none");	
+			wrapper.appendChild(node);
+											
+		return wrapper;
+	};
+
 	/*
 	 * Aries symbol path
 	 * @private
