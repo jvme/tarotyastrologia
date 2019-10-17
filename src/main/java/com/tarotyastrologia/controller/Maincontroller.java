@@ -3,6 +3,7 @@ package com.tarotyastrologia.controller;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -61,9 +62,19 @@ public class Maincontroller {
 		LocalDateTime event = LocalDateTime.parse(yy + "-" + mm + "-" + dd + "T" + hh + ":" + mn + ":00");
 		Planet planetEphemeris = new PlanetBuilder(event)
 				//.planets()
-				.planet("Sun, Moon, Mercury, Venus, Mars, Jupiter, Saturn, Uranus, Neptune, Pluto")
+				.planet("Sun, Moon, Mercury, Venus, Mars, Jupiter, Saturn, Uranus, Neptune, Pluto, NNode")
 				.topo(lon, lat, 0).build();
 
+		List<Double> nnode = planetEphemeris.getPlanets().get("NNode");
+		List<Double> snode = new ArrayList<Double>();
+		Double snode1 = nnode.get(0) + 180;
+		if (snode1 > 360) {
+			snode1 = 360 - snode1;
+		}
+		snode.add(snode1);
+		snode.add(nnode.get(1));
+		planetEphemeris.getPlanets().put("SNode", snode);
+		
 		String jsonplanetEphemeris = planetEphemeris.toJSON();
 
 		Cusp cuspEphemeris = new CuspBuilder(event)

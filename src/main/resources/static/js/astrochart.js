@@ -171,11 +171,11 @@
 		};	
 */	
 	astrology.ASPECTS = { 
-			"conjunction":{"degree":0, "orbit":14, "color":"#FF0000"}, 
-			"square":{"degree":90, "orbit":14, "color":"#FF4500"}, 
-			"trine":{"degree":120, "orbit":14, "color":"#27AE60"},
-			"opposition":{"degree":180, "orbit":14, "color":"#0000FF"},
-			"sextile":{"degree":60, "orbit":14, "color":"#27AE60"},
+			"conjunction":{"degree":0, "orbit":25, "color":"#FF0000"}, 
+			"square":{"degree":90, "orbit":18, "color":"#FF4500"}, 
+			"trine":{"degree":120, "orbit":22, "color":"#27AE60"},
+			"opposition":{"degree":180, "orbit":24, "color":"#0000FF"},
+			"sextile":{"degree":60, "orbit":16, "color":"#27AE60"},
 			};	
 	
 	// Dignities
@@ -2616,7 +2616,7 @@
 		var result = false;
 		
 		//var gap = Math.abs( point - toPoint );
-		var gap = Math.round(Math.abs( point - toPoint ));
+		var gap = Math.abs( point - toPoint );
 		
 		if( gap > astrology.utils.radiansToDegree( Math.PI)){
 			gap = astrology.utils.radiansToDegree( 2 * Math.PI) - gap;
