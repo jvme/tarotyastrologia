@@ -9,4 +9,8 @@
 		return this;
 	};
 	
-}(window.aspects = window.aspects || {}));
+}(window.jmeaspects = window.jmeaspects || {}));
+
+(function(aspects) {
+	aspects.TRIGONO = 3;
+}(window.jmeaspects));

@@ -138,6 +138,7 @@
 	astrology.SYMBOL_SIGNS = [astrology.SYMBOL_ARIES, astrology.SYMBOL_TAURUS, astrology.SYMBOL_GEMINI, astrology.SYMBOL_CANCER, astrology.SYMBOL_LEO, astrology.SYMBOL_VIRGO, astrology.SYMBOL_LIBRA, astrology.SYMBOL_SCORPIO, astrology.SYMBOL_SAGITTARIUS, astrology.SYMBOL_CAPRICORN, astrology.SYMBOL_AQUARIUS, astrology.SYMBOL_PISCES];
 			 
 	// http://www.rapidtables.com/web/color/html-color-codes.htm
+	/*
 	astrology.COLOR_ARIES = "#FF4500";
 	astrology.COLOR_TAURUS = "#8B4513";
 	astrology.COLOR_GEMINI= "#87CEEB";
@@ -149,7 +150,21 @@
 	astrology.COLOR_SAGITTARIUS = "#FF4500";
 	astrology.COLOR_CAPRICORN = "#8B4513"; 
 	astrology.COLOR_AQUARIUS = "#87CEEB"; 
-	astrology.COLOR_PISCES = "#27AE60"; 	        	
+	astrology.COLOR_PISCES = "#27AE60";
+	*/
+	astrology.COLOR_ARIES = "#FF0000";
+	astrology.COLOR_TAURUS = "#00FF00";
+	astrology.COLOR_GEMINI= "#FFFF00";
+	astrology.COLOR_CANCER = "#FFFFFF"; 
+	astrology.COLOR_LEO = "#FF8000"; 
+	astrology.COLOR_VIRGO = "#CFCFCF"; 
+	astrology.COLOR_LIBRA = "#33D5CC";  
+	astrology.COLOR_SCORPIO = "#008000";  
+	astrology.COLOR_SAGITTARIUS = "#0000FF";
+	astrology.COLOR_CAPRICORN = "#9900CC"; 
+	astrology.COLOR_AQUARIUS = "#FFFFCC"; 
+	astrology.COLOR_PISCES = "#000066";
+
 	astrology.COLORS_SIGNS = [astrology.COLOR_ARIES, astrology.COLOR_TAURUS, astrology.COLOR_GEMINI, astrology.COLOR_CANCER, astrology.COLOR_LEO, astrology.COLOR_VIRGO, astrology.COLOR_LIBRA, astrology.COLOR_SCORPIO, astrology.COLOR_SAGITTARIUS, astrology.COLOR_CAPRICORN, astrology.COLOR_AQUARIUS, astrology.COLOR_PISCES];
 	
 	// 0 degree is on the West 
@@ -1143,7 +1158,8 @@
 				
 			var node = document.createElementNS( context.root.namespaceURI, "path");
 			node.setAttribute("d", "m " + x + ", " + y + " 1.8047633,-3.6095267 4.5119084,9.0238168 m -4.5119084,-7.2190534 4.5119084,9.0238167 2.707145,-6.3166717 4.5119084,0 2.707145,-0.9023817 0.9023817,-1.8047633 0,-1.8047634 -0.9023817,-1.8047633 -1.8047634,-0.9023817 -0.9023816,0 -1.8047634,0.9023817 -0.9023817,1.8047633 0,1.8047634 0.9023817,2.707145 0.9023817,1.80476336 0.9023817,2.70714504 0,2.707145 -1.8047634,1.8047633 m 1.8047634,-16.2428701 -0.9023817,0.9023817 -0.9023817,1.8047633 0,1.8047634 1.8047634,3.6095267 0.9023816,2.707145 0,2.707145 -0.9023816,1.8047634 -1.8047634,0.9023816");				
-			node.setAttribute("stroke", astrology.SIGNS_COLOR);		 
+			//node.setAttribute("stroke", astrology.SIGNS_COLOR);		
+			node.setAttribute("stroke", astrology.COLOR_BACKGROUND);			
 			node.setAttribute("stroke-width", astrology.SIGNS_STROKE);			
 			node.setAttribute("fill", "none");												
 			wrapper.appendChild(node);
@@ -1203,7 +1219,8 @@
 				
 			var node = document.createElementNS( context.root.namespaceURI, "path");
 			node.setAttribute("d", "m " + x + ", " + y + " 4,2 2,2 1,3 0,3 -1,3 -2,2 -4,2 m 0,-17 3,1 2,1 2,2 1,3 m 0,3 -1,3 -2,2 -2,1 -3,1 m 16,-17 -3,1 -2,1 -2,2 -1,3 m 0,3 1,3 2,2 2,1 3,1 m 0,-17 -4,2 -2,2 -1,3 0,3 1,3 2,2 4,2 m -17,-9 18,0 m -18,1 18,0");				
-			node.setAttribute("stroke", astrology.SIGNS_COLOR);		 
+			//node.setAttribute("stroke", astrology.SIGNS_COLOR);		
+			node.setAttribute("stroke", astrology.COLOR_BACKGROUND);	
 			node.setAttribute("stroke-width", astrology.SIGNS_STROKE);			
 			node.setAttribute("fill", "none");												
 			wrapper.appendChild(node);
