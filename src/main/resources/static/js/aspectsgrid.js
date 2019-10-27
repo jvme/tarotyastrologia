@@ -57,7 +57,7 @@
 	 * @return {SVG g}
 	 */
 
-	astrology.SVG.prototype.getSymbol = function( name, x, y){		
+	aspects.SVG.prototype.getSymbol = function( name, x, y){		
 		
 		switch(name) {
 			case aspects.CONJUNCTION:		        
@@ -83,66 +83,6 @@
 		    	return unknownPoint;	 
 		}			
 	};
-	
-	/*
-	 * Conjunction path
-	 * @private
-	 * 
-	 * @param {int} x
-	 * @param {int} y	 
-	 * 
-	 * @return {SVG g}
-	 */
-	function conjunction( x, y ){
-		
-		// center symbol
-		var xShift = -1; //px						
-		var yShift = -8; //px		
-		x =  Math.round(x + (xShift * astrology.SYMBOL_SCALE));
-		y =  Math.round(y + (yShift * astrology.SYMBOL_SCALE));
-					
-		var wrapper = document.createElementNS(context.root.namespaceURI, "g");
-		wrapper.setAttribute("transform", "translate(" + ( -x * (astrology.SYMBOL_SCALE - 1)) + "," + (-y * (astrology.SYMBOL_SCALE - 1)) + ") scale(" + astrology.SYMBOL_SCALE + ")");
-						
-			var node = document.createElementNS( context.root.namespaceURI, "path");
-			node.setAttribute("d", "m" + x + ", " + y + " -2.18182,0.727268 -2.181819,1.454543 -1.454552,2.18182 -0.727268,2.181819 0,2.181819 0.727268,2.181819 1.454552,2.18182 2.181819,1.454544 2.18182,0.727276 2.18181,0 2.18182,-0.727276 2.181819,-1.454544 1.454552,-2.18182 0.727268,-2.181819 0,-2.181819 -0.727268,-2.181819 -1.454552,-2.18182 -2.181819,-1.454543 -2.18182,-0.727268 -2.18181,0 m 0.727267,6.54545 -0.727267,0.727276 0,0.727275 0.727267,0.727268 0.727276,0 0.727267,-0.727268 0,-0.727275 -0.727267,-0.727276 -0.727276,0 m 0,0.727276 0,0.727275 0.727276,0 0,-0.727275 -0.727276,0");				
-			node.setAttribute("stroke", astrology.POINTS_COLOR);		 
-			node.setAttribute("stroke-width", astrology.POINTS_STROKE);					
-			node.setAttribute("fill", "none");
-			wrapper.appendChild(node);
-																	
-		return wrapper;
-	};
-	
-	/*
-	 * Sextile path
-	 * @private
-	 * 
-	 * @param {int} x
-	 * @param {int} y	 
-	 * 
-	 * @return {SVGPathElement} path
-	 */
-	function sextile( x, y ){
-		
-		// center symbol
-		var xShift = -2; //px						
-		var yShift = -7; //px		
-		x =  Math.round(x + (xShift * astrology.SYMBOL_SCALE));
-		y =  Math.round(y + (yShift * astrology.SYMBOL_SCALE));
-		
-		var wrapper = document.createElementNS(context.root.namespaceURI, "g");
-		wrapper.setAttribute("transform", "translate(" + ( -x * (astrology.SYMBOL_SCALE - 1)) + "," + (-y * (astrology.SYMBOL_SCALE - 1)) + ") scale(" + astrology.SYMBOL_SCALE + ")");
-				
-			var node = document.createElementNS( context.root.namespaceURI, "path");
-			node.setAttribute("d", "m" + x + ", " + y + " a 7.4969283,7.4969283 0 0 1 0,14.327462 7.4969283,7.4969283 0 1 0 0,-14.327462 z");				
-			node.setAttribute("stroke", astrology.POINTS_COLOR);		 
-			node.setAttribute("stroke-width", astrology.POINTS_STROKE);
-			node.setAttribute("fill","none");			
-			wrapper.appendChild(node);
-											
-		return wrapper;
-	};
 
 	/*
 	 * Square path
@@ -163,9 +103,8 @@
 		
 		var wrapper = document.createElementNS(context.root.namespaceURI, "g");
 		wrapper.setAttribute("transform", "translate(" + ( -x * (astrology.SYMBOL_SCALE - 1)) + "," + (-y * (astrology.SYMBOL_SCALE - 1)) + ") scale(" + astrology.SYMBOL_SCALE + ")");
-				
 			var node = document.createElementNS( context.root.namespaceURI, "path");
-			node.setAttribute("d", "m" + x + ", " + y + " a 7.4969283,7.4969283 0 0 1 0,14.327462 7.4969283,7.4969283 0 1 0 0,-14.327462 z");				
+			node.setAttribute("d", "m" + x + ", " + y + " H 45.911341 V 46.134005 H 4.0886593 Z");				
 			node.setAttribute("stroke", astrology.POINTS_COLOR);		 
 			node.setAttribute("stroke-width", astrology.POINTS_STROKE);
 			node.setAttribute("fill","none");			
@@ -193,9 +132,8 @@
 		
 		var wrapper = document.createElementNS(context.root.namespaceURI, "g");
 		wrapper.setAttribute("transform", "translate(" + ( -x * (astrology.SYMBOL_SCALE - 1)) + "," + (-y * (astrology.SYMBOL_SCALE - 1)) + ") scale(" + astrology.SYMBOL_SCALE + ")");
-				
 			var node = document.createElementNS( context.root.namespaceURI, "path");
-			node.setAttribute("d", "m" + x + ", " + y + " a 7.4969283,7.4969283 0 0 1 0,14.327462 7.4969283,7.4969283 0 1 0 0,-14.327462 z");				
+			node.setAttribute("d", "m" + x + ", " + y + " h -44 m 11,-19 22,37.999998 m 0,-37.999998 -22,37.999998");
 			node.setAttribute("stroke", astrology.POINTS_COLOR);		 
 			node.setAttribute("stroke-width", astrology.POINTS_STROKE);
 			node.setAttribute("fill","none");			
@@ -214,6 +152,35 @@
 	 * @return {SVGPathElement} path
 	 */
 	function trine( x, y ){
+
+		// center symbol
+		var xShift = -2; //px						
+		var yShift = -7; //px		
+		x =  Math.round(x + (xShift * astrology.SYMBOL_SCALE));
+		y =  Math.round(y + (yShift * astrology.SYMBOL_SCALE));
+		
+		var wrapper = document.createElementNS(context.root.namespaceURI, "g");
+		wrapper.setAttribute("transform", "translate(" + ( -x * (astrology.SYMBOL_SCALE - 1)) + "," + (-y * (astrology.SYMBOL_SCALE - 1)) + ") scale(" + astrology.SYMBOL_SCALE + ")");
+			var node = document.createElementNS( context.root.namespaceURI, "path");
+			node.setAttribute("d", "M" + x + ", " + y + " H 45 L 25,7 Z");		
+			node.setAttribute("stroke", astrology.POINTS_COLOR);		 
+			node.setAttribute("stroke-width", astrology.POINTS_STROKE);
+			node.setAttribute("fill","none");			
+			wrapper.appendChild(node);
+											
+		return wrapper;
+	};
+
+	/*
+	 * Conjunction path
+	 * @private
+	 * 
+	 * @param {int} x
+	 * @param {int} y	 
+	 * 
+	 * @return {SVGPathElement} path
+	 */
+	function conjunction( x, y ){
 		
 		// center symbol
 		var xShift = -2; //px						
@@ -225,15 +192,16 @@
 		wrapper.setAttribute("transform", "translate(" + ( -x * (astrology.SYMBOL_SCALE - 1)) + "," + (-y * (astrology.SYMBOL_SCALE - 1)) + ") scale(" + astrology.SYMBOL_SCALE + ")");
 				
 			var node = document.createElementNS( context.root.namespaceURI, "path");
-			node.setAttribute("d", "m" + x + ", " + y + " a 7.4969283,7.4969283 0 0 1 0,14.327462 7.4969283,7.4969283 0 1 0 0,-14.327462 z");				
+			node.setAttribute("d", "m" + x + ", " + y + " a 11,11 0 1 0 2,2 z m 1,1 22,-22");	
 			node.setAttribute("stroke", astrology.POINTS_COLOR);		 
 			node.setAttribute("stroke-width", astrology.POINTS_STROKE);
 			node.setAttribute("fill","none");			
 			wrapper.appendChild(node);
 											
 		return wrapper;
-	};
+	};	
 
+	
 	/*
 	 * Opposition path
 	 * @private
@@ -255,7 +223,7 @@
 		wrapper.setAttribute("transform", "translate(" + ( -x * (astrology.SYMBOL_SCALE - 1)) + "," + (-y * (astrology.SYMBOL_SCALE - 1)) + ") scale(" + astrology.SYMBOL_SCALE + ")");
 				
 			var node = document.createElementNS( context.root.namespaceURI, "path");
-			node.setAttribute("d", "m" + x + ", " + y + " a 7.4969283,7.4969283 0 0 1 0,14.327462 7.4969283,7.4969283 0 1 0 0,-14.327462 z");				
+			node.setAttribute("d", "m" + x + ", " + y + " a 9,9 0 1 0 2,2 z m 1,1 12,-12 m 1,1 a 9,9 0 1 0 -2,-2 z");	
 			node.setAttribute("stroke", astrology.POINTS_COLOR);		 
 			node.setAttribute("stroke-width", astrology.POINTS_STROKE);
 			node.setAttribute("fill","none");			
