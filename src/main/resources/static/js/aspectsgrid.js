@@ -241,6 +241,38 @@
 											
 		return wrapper;
 	};	
+	
+	
+	/*
+	 * grid path
+	 * @private
+	 * 
+	 * @param {int} x
+	 * @param {int} y	 
+	 * 
+	 * @return {SVGPathElement} path
+	 */
+	function gridAspects( x, y ){
+		
+		// center symbol
+		var xShift = -2; //px						
+		var yShift = -7; //px		
+		x =  Math.round(x + (xShift * astrology.SYMBOL_SCALE));
+		y =  Math.round(y + (yShift * astrology.SYMBOL_SCALE));
+		
+		var wrapper = document.createElementNS(context.root.namespaceURI, "g");
+		wrapper.setAttribute("transform", "translate(" + ( -x * (astrology.SYMBOL_SCALE - 1)) + "," + (-y * (astrology.SYMBOL_SCALE - 1)) + ") scale(" + astrology.SYMBOL_SCALE + ")");
+				
+			var node = document.createElementNS( context.root.namespaceURI, "path");
+			node.setAttribute("d", "m" + x + ", " + y + " a 11,11 0 1 0 2,2 z m 1,1 22,-22");	
+			node.setAttribute("stroke", astrology.POINTS_COLOR);		 
+			node.setAttribute("stroke-width", astrology.POINTS_STROKE);
+			node.setAttribute("fill","none");			
+			wrapper.appendChild(node);
+											
+		return wrapper;
+	};	
+
 }( window.aspects = window.aspects || {}));
 
 //## CHART ###################################
@@ -421,9 +453,9 @@
 	/**
 	 * Draw background
 	 */
-	astrology.Radix.prototype.drawBg = function(){				
+	astrology.Radix.prototype.drawGrid = function(){				
 		var universe = this.universe;	
-		var wrapper = astrology.utils.getEmptyWrapper( universe, astrology.ID_CHART + "-" + astrology.ID_BG);	
+		var wrapper = aspects.utils.getEmptyWrapper( universe, astrology.ID_CHART + "-" + astrology.ID_BG);	
 		
 		var LARGE_ARC_FLAG = 1;	
 		var start = 0; //degree
