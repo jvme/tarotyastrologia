@@ -27,7 +27,8 @@
 				"Mc" : [ data.cusps[9] ]
 			});
 			*/
-			var aspects = radix.aspects();	
+			var aspects2 = radix.aspects();	
+			console.log(aspects);
 			
 			///
 			var tablaFila = {
@@ -62,16 +63,19 @@
 				};
 			};
 
-			for (var filaKey in tablaFila) {
-				tablaFila[filaKey] = tablaCol();				
-			}
-			
-			
 			var lasp = new astrology.AspectCalculator(radix.toPoints, astrology.ASPECTS).radix(data.planets);
 			lasp.forEach(function(lAsp) {
 				tablaFila[lAsp.point.name][lAsp.toPoint.name] = lAsp;
 			});
+
 			
+			var asp = new aspects.GridAspects('paper', 800, 800);
+			asp.draw(lasp);
+			
+			for (var filaKey in tablaFila) {
+				tablaFila[filaKey] = tablaCol();				
+			}
+						
 			
 			var table = document.createElement("table");
 			table.className="gridtable";
