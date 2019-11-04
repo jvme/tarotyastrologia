@@ -9,7 +9,8 @@
 	aspects.OPPOSITION = "Opposition";
 	
 	// Color of lines in charts
-	aspects.LINE_COLOR = "#333";
+	//aspects.LINE_COLOR = "#333";
+	aspects.LINE_COLOR = "#000";
 
 	
 	// Module wrapper element ID
@@ -27,7 +28,7 @@
 	aspects.ID_ASPECTS = "aspects";
 	
 	//Scale of symbols	 
-	aspects.SYMBOL_SCALE = 1;
+	aspects.SYMBOL_SCALE = 1.5;
 		
 	// BG color
 	aspects.COLOR_BACKGROUND = "#fff";		 
@@ -1358,7 +1359,8 @@
 		line.setAttribute("x1", x1);
 		line.setAttribute("y1", y1);	
   	    line.setAttribute("x2", x2);
-		line.setAttribute("y2", y2);											
+		line.setAttribute("y2", y2);
+		line.setAttribute("stroke", color);
 		return line;
 	};
 	
@@ -1627,7 +1629,7 @@
 	 */
 	aspects.GridAspects.prototype.draw = function( data ){
 												
-		var drawAspects = new aspects.DrawAspects(this.paper, this.cx, this.cy, this.radius, data);
+		var drawAspects = new aspects.DrawAspects(this.paper, data);
 		drawAspects.drawGrid();									
 										 							
 		return drawAspects;
@@ -1706,7 +1708,7 @@
 	 * @param {int} radius
 	 * @param {Object} data
 	 */
-	aspects.DrawAspects = function( paper, cx, cy, radius, data ){
+	aspects.DrawAspects = function( paper, data ){
 		
 		// Validate data
 		var status = aspects.utils.validate(data);		 		
@@ -1716,9 +1718,6 @@
 		
 		this.data = data;								
 		this.paper = paper; 
-		this.cx = cx;
-		this.cy = cy;
-		this.radius = radius;
 		
 		// after calling this.drawPoints() it contains current position of point
 		this.locatedPoints = [];
@@ -1733,33 +1732,41 @@
 		this.universe.setAttribute('id', aspects.ID_CHART + "-" + aspects.ID_ASPECT_GRID);
 		this.paper.root.appendChild( this.universe );
 						
-				
-		var deltaY = Math.trunc((this.paper.height - 2* aspects.MARGIN) / 10);
-		var deltaX = Math.trunc((this.paper.width - 2* aspects.MARGIN) / 10);
+		var planets = ["Sun", "Moon", "Mercury", "Venus", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto", "NNode", "SNode"];		
+		var divisiones = 13;
+		var deltaY = Math.trunc((this.paper.height - 2* aspects.MARGIN) / divisiones);
+		var deltaX = Math.trunc((this.paper.width - 2* aspects.MARGIN) / divisiones);
 		var iniciX = aspects.MARGIN;
 		var iniciY = aspects.MARGIN;
-		var fiX = this.paper.width - aspects.MARGIN;
-		var fiY = this.paper.height - aspects.MARGIN;
+		//var fiX = this.paper.width - aspects.MARGIN;
+		//var fiY = this.paper.height - aspects.MARGIN;
+		var fiX = iniciY + deltaY * divisiones;
+		var fiY = iniciX + deltaX * divisiones;
+
 		//Eje X
-		for (var i = 0; i < deltaY; i++) {
-			line = this.paper.line(iniciX, iniciY + deltaY * i, fiX,  iniciY + deltaY * i);
-			line.setAttribute("stroke", aspects.LINE_COLOR);	
-			this.paper.root.appendChild( line);		
-		}
-		//Eje Y
-		for (var i = 0; i < deltaX; i++) {
-			line = this.paper.line(iniciX + deltaX * i, iniciY, iniciX + deltaX * i,  fiY);
-			line.setAttribute("stroke", aspects.LINE_COLOR);	
-			this.paper.root.appendChild( line);		
+		for (var i = 0; i < divisiones + 1; i++) {
+			line = this.paper.line(iniciX + deltaX * i, iniciY, iniciX + deltaX * i,  fiY, aspects.LINE_COLOR);
+			this.universe.appendChild(line);
+			//this.paper.root.appendChild( line);		
 		}		
-		
-		
-		//Eje X
-		for (var i = 0; i < deltaY; i++) {
-			line = this.paper.line(iniciX, iniciY + deltaY * i, fiX,  iniciY + deltaY * i);
-			line.setAttribute("stroke", aspects.LINE_COLOR);	
-			this.paper.root.appendChild( line);		
+		//Eje Y
+		for (var i = 0; i < divisiones + 1; i++) {
+			line = this.paper.line(iniciX, iniciY + deltaY * i, fiX,  iniciY + deltaY * i, aspects.LINE_COLOR);
+			this.universe.appendChild(line);
+			//this.paper.root.appendChild( line);		
 		}
+		//Símbolos eje X
+		for (var i = 1; i < divisiones; i++) {
+			symbol = this.paper.getSymbol(planets[i-1], Math.trunc(deltaX/2) + iniciX + Math.trunc(deltaX) * i, Math.trunc(deltaY/2) + iniciY);
+			this.universe.appendChild(symbol);
+			//this.paper.root.appendChild( symbol);		
+		}		
+		//Símbolos eje Y
+		for (var i = 1; i < divisiones; i++) {
+			symbol = this.paper.getSymbol(planets[i-1], Math.trunc(deltaX/2) + iniciX, Math.trunc(deltaY/2) + iniciY + Math.trunc(deltaY) * i);
+			this.universe.appendChild(symbol);
+			//this.paper.root.appendChild( symbol);		
+		}		
 			
 		
 		context = this;
