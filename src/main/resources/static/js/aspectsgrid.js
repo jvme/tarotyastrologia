@@ -30,6 +30,9 @@
 	//Scale of symbols	 
 	aspects.SYMBOL_SCALE = 1.5;
 		
+	//Scale of symbols	 
+	aspects.ASPECT_SYMBOL_SCALE = 1;
+
 	// BG color
 	aspects.COLOR_BACKGROUND = "#fff";		 
 				
@@ -343,9 +346,10 @@
 		y =  Math.round(y + (yShift * aspects.SYMBOL_SCALE));
 		
 		var wrapper = document.createElementNS(context.root.namespaceURI, "g");
-		wrapper.setAttribute("transform", "translate(" + ( -x * (aspects.SYMBOL_SCALE - 1)) + "," + (-y * (aspects.SYMBOL_SCALE - 1)) + ") scale(" + aspects.SYMBOL_SCALE + ")");
+		wrapper.setAttribute("transform", "translate(" + ( -x * (aspects.ASPECT_SYMBOL_SCALE - 1)) + "," + (-y * (aspects.ASPECT_SYMBOL_SCALE - 1)) + ") scale(" + aspects.ASPECT_SYMBOL_SCALE + ")");
 			var node = document.createElementNS( context.root.namespaceURI, "path");
-			node.setAttribute("d", "m" + x + ", " + y + " H 45.911341 V 46.134005 H 4.0886593 Z");				
+			var longitudLado = 30; // Tamaño cuadrado
+			node.setAttribute("d", "m" + x + ", " + y + " H " + (x + longitudLado) + " V " + (y + longitudLado) + " H " + x + " Z");				
 			node.setAttribute("stroke", aspects.POINTS_COLOR);		 
 			node.setAttribute("stroke-width", aspects.POINTS_STROKE);
 			node.setAttribute("fill","none");			
@@ -372,7 +376,7 @@
 		y =  Math.round(y + (yShift * aspects.SYMBOL_SCALE));
 		
 		var wrapper = document.createElementNS(context.root.namespaceURI, "g");
-		wrapper.setAttribute("transform", "translate(" + ( -x * (aspects.SYMBOL_SCALE - 1)) + "," + (-y * (aspects.SYMBOL_SCALE - 1)) + ") scale(" + aspects.SYMBOL_SCALE + ")");
+		wrapper.setAttribute("transform", "translate(" + ( -x * (aspects.ASPECT_SYMBOL_SCALE - 1)) + "," + (-y * (aspects.ASPECT_SYMBOL_SCALE - 1)) + ") scale(" + aspects.ASPECT_SYMBOL_SCALE + ")");
 			var node = document.createElementNS( context.root.namespaceURI, "path");
 			node.setAttribute("d", "m" + x + ", " + y + " h -44 m 11,-19 22,37.999998 m 0,-37.999998 -22,37.999998");
 			node.setAttribute("stroke", aspects.POINTS_COLOR);		 
@@ -401,9 +405,13 @@
 		y =  Math.round(y + (yShift * aspects.SYMBOL_SCALE));
 		
 		var wrapper = document.createElementNS(context.root.namespaceURI, "g");
-		wrapper.setAttribute("transform", "translate(" + ( -x * (aspects.SYMBOL_SCALE - 1)) + "," + (-y * (aspects.SYMBOL_SCALE - 1)) + ") scale(" + aspects.SYMBOL_SCALE + ")");
+		wrapper.setAttribute("transform", "translate(" + ( -x * (aspects.ASPECT_SYMBOL_SCALE - 1)) + "," + (-y * (aspects.ASPECT_SYMBOL_SCALE - 1)) + ") scale(" + aspects.ASPECT_SYMBOL_SCALE + ")");
+			var Hx = x + 30; // Tamaño triángulo
+			var alturaTriangulo = Math.abs(Math.round((Hx - x) * Math.cos(60)));
+			var triangulo = "M" + x + ", " + y + " H " + Hx + " L " + (x + Math.round((Hx - x)/2)) + "," + (y - alturaTriangulo) + "Z";
+			
 			var node = document.createElementNS( context.root.namespaceURI, "path");
-			node.setAttribute("d", "M" + x + ", " + y + " H 45 L 25,7 Z");		
+			node.setAttribute("d", triangulo);				
 			node.setAttribute("stroke", aspects.POINTS_COLOR);		 
 			node.setAttribute("stroke-width", aspects.POINTS_STROKE);
 			node.setAttribute("fill","none");			
@@ -430,7 +438,7 @@
 		y =  Math.round(y + (yShift * aspects.SYMBOL_SCALE));
 		
 		var wrapper = document.createElementNS(context.root.namespaceURI, "g");
-		wrapper.setAttribute("transform", "translate(" + ( -x * (aspects.SYMBOL_SCALE - 1)) + "," + (-y * (aspects.SYMBOL_SCALE - 1)) + ") scale(" + aspects.SYMBOL_SCALE + ")");
+		wrapper.setAttribute("transform", "translate(" + ( -x * (aspects.ASPECT_SYMBOL_SCALE - 1)) + "," + (-y * (aspects.ASPECT_SYMBOL_SCALE - 1)) + ") scale(" + aspects.ASPECT_SYMBOL_SCALE + ")");
 				
 			var node = document.createElementNS( context.root.namespaceURI, "path");
 			node.setAttribute("d", "m" + x + ", " + y + " a 11,11 0 1 0 2,2 z m 1,1 22,-22");	
@@ -461,15 +469,13 @@
 		y =  Math.round(y + (yShift * aspects.SYMBOL_SCALE));
 		
 		var wrapper = document.createElementNS(context.root.namespaceURI, "g");
-		wrapper.setAttribute("transform", "translate(" + ( -x * (aspects.SYMBOL_SCALE - 1)) + "," + (-y * (aspects.SYMBOL_SCALE - 1)) + ") scale(" + aspects.SYMBOL_SCALE + ")");
-				
+		wrapper.setAttribute("transform", "translate(" + ( -x * (aspects.ASPECT_SYMBOL_SCALE - 1)) + "," + (-y * (aspects.ASPECT_SYMBOL_SCALE - 1)) + ") scale(" + aspects.ASPECT_SYMBOL_SCALE + ")");
 			var node = document.createElementNS( context.root.namespaceURI, "path");
-			node.setAttribute("d", "m" + x + ", " + y + " a 9,9 0 1 0 2,2 z m 1,1 12,-12 m 1,1 a 9,9 0 1 0 -2,-2 z");	
+			node.setAttribute("d", "m" + x + "," + y + "a9,9 0 1,0 2,2zm1,1 12-12m1,1a9,9 0 1,0-2-2z");	
 			node.setAttribute("stroke", aspects.POINTS_COLOR);		 
 			node.setAttribute("stroke-width", aspects.POINTS_STROKE);
 			node.setAttribute("fill","none");			
 			wrapper.appendChild(node);
-											
 		return wrapper;
 	};	
 	
@@ -1382,219 +1388,6 @@
 		return circle;
 	};
 	
-	/*
-	 * grid path
-	 * @private
-	 * 
-	 * @param {int} x
-	 * @param {int} y	 
-	 * 
-	 * @return {SVGPathElement} path
-	 */
-	aspects.SVG.prototype.gridAspects = function gridAspects( x, y ){
-		
-		// center symbol
-		var xShift = -2; //px						
-		var yShift = -7; //px		
-		x =  Math.round(x + (xShift * aspects.SYMBOL_SCALE));
-		y =  Math.round(y + (yShift * aspects.SYMBOL_SCALE));
-		
-		var wrapper = document.createElementNS(context.root.namespaceURI, "g");
-		//wrapper.setAttribute("transform", "translate(" + ( -x * (aspects.SYMBOL_SCALE - 1)) + "," + (-y * (aspects.SYMBOL_SCALE - 1)) + ") scale(" + aspects.SYMBOL_SCALE + ")");
-		wrapper.setAttribute("transform", "translate(0,-147)");
-			
-			var node = document.createElementNS( context.root.namespaceURI, "path");
-			node.setAttribute("d", "m 0.22556077,286.85895 129.99986923,-0.098 v 0");	
-			node.setAttribute("stroke", aspects.POINTS_COLOR);		 
-			node.setAttribute("stroke-width", aspects.POINTS_STROKE);
-			node.setAttribute("fill","none");			
-			wrapper.appendChild(node);
-			
-			node = document.createElementNS( context.root.namespaceURI, "path");
-			node.setAttribute("d", "m 0.13384884,186.85895 129.99987116,-0.098 v 0");	
-			node.setAttribute("stroke", aspects.POINTS_COLOR);		 
-			node.setAttribute("stroke-width", aspects.POINTS_STROKE);
-			node.setAttribute("fill","none");			
-			wrapper.appendChild(node);
-			
-			node = document.createElementNS( context.root.namespaceURI, "path");
-			node.setAttribute("d", "m 0.14302003,196.85895 129.99986997,-0.098 v 0");	
-			node.setAttribute("stroke", aspects.POINTS_COLOR);		 
-			node.setAttribute("stroke-width", aspects.POINTS_STROKE);
-			node.setAttribute("fill","none");			
-			wrapper.appendChild(node);
-
-			node = document.createElementNS( context.root.namespaceURI, "path");
-			node.setAttribute("d", "m 0.15219123,206.85895 129.99986877,-0.098 v 0");	
-			node.setAttribute("stroke", aspects.POINTS_COLOR);		 
-			node.setAttribute("stroke-width", aspects.POINTS_STROKE);
-			node.setAttribute("fill","none");			
-			wrapper.appendChild(node);
-
-			node = document.createElementNS( context.root.namespaceURI, "path");
-			node.setAttribute("d", "m 0.16136243,216.85895 129.99986757,-0.098 v 0");	
-			node.setAttribute("stroke", aspects.POINTS_COLOR);		 
-			node.setAttribute("stroke-width", aspects.POINTS_STROKE);
-			node.setAttribute("fill","none");			
-			wrapper.appendChild(node);
-
-			node = document.createElementNS( context.root.namespaceURI, "path");
-			node.setAttribute("d", "m 0.1705336,226.85895 129.9998664,-0.098 v 0");	
-			node.setAttribute("stroke", aspects.POINTS_COLOR);		 
-			node.setAttribute("stroke-width", aspects.POINTS_STROKE);
-			node.setAttribute("fill","none");			
-			wrapper.appendChild(node);
-
-			node = document.createElementNS( context.root.namespaceURI, "path");
-			node.setAttribute("d", "m 0.1797048,236.85895 129.9998652,-0.098 v 0");	
-			node.setAttribute("stroke", aspects.POINTS_COLOR);		 
-			node.setAttribute("stroke-width", aspects.POINTS_STROKE);
-			node.setAttribute("fill","none");			
-			wrapper.appendChild(node);
-
-			node = document.createElementNS( context.root.namespaceURI, "path");
-			node.setAttribute("d", "m 0.188876,246.85895 129.999864,-0.098 v 0");	
-			node.setAttribute("stroke", aspects.POINTS_COLOR);		 
-			node.setAttribute("stroke-width", aspects.POINTS_STROKE);
-			node.setAttribute("fill","none");			
-			wrapper.appendChild(node);
-
-			node = document.createElementNS( context.root.namespaceURI, "path");
-			node.setAttribute("d", "M 0.19804719,256.85895 130.19791,256.76102 v 0");	
-			node.setAttribute("stroke", aspects.POINTS_COLOR);		 
-			node.setAttribute("stroke-width", aspects.POINTS_STROKE);
-			node.setAttribute("fill","none");			
-			wrapper.appendChild(node);
-
-			node = document.createElementNS( context.root.namespaceURI, "path");
-			node.setAttribute("d", "m 0.20721838,266.85895 129.99987162,-0.098 v 0");	
-			node.setAttribute("stroke", aspects.POINTS_COLOR);		 
-			node.setAttribute("stroke-width", aspects.POINTS_STROKE);
-			node.setAttribute("fill","none");			
-			wrapper.appendChild(node);
-
-			node = document.createElementNS( context.root.namespaceURI, "path");
-			node.setAttribute("d", "m 0.13384884,176.85895 129.99987116,-0.098 v 0");	
-			node.setAttribute("stroke", aspects.POINTS_COLOR);		 
-			node.setAttribute("stroke-width", aspects.POINTS_STROKE);
-			node.setAttribute("fill","none");			
-			wrapper.appendChild(node);
-			
-			node = document.createElementNS( context.root.namespaceURI, "path");
-			node.setAttribute("d", "M 0.13384858,166.85898 130.13372,166.76126 v 0");	
-			node.setAttribute("stroke", aspects.POINTS_COLOR);		 
-			node.setAttribute("stroke-width", aspects.POINTS_STROKE);
-			node.setAttribute("fill","none");			
-			wrapper.appendChild(node);
-
-			node = document.createElementNS( context.root.namespaceURI, "path");
-			node.setAttribute("d", "M 0.13384855,156.85898 130.13371,156.76124 v 0");	
-			node.setAttribute("stroke", aspects.POINTS_COLOR);		 
-			node.setAttribute("stroke-width", aspects.POINTS_STROKE);
-			node.setAttribute("fill","none");			
-			wrapper.appendChild(node);
-
-			node = document.createElementNS( context.root.namespaceURI, "path");
-			node.setAttribute("d", "m 10.290291,157 v 130 0");	
-			node.setAttribute("stroke", aspects.POINTS_COLOR);		 
-			node.setAttribute("stroke-width", aspects.POINTS_STROKE);
-			node.setAttribute("fill","none");			
-			wrapper.appendChild(node);
-
-			node = document.createElementNS( context.root.namespaceURI, "path");
-			node.setAttribute("d", "m 20.290291,157.00017 v 130 0");	
-			node.setAttribute("stroke", aspects.POINTS_COLOR);		 
-			node.setAttribute("stroke-width", aspects.POINTS_STROKE);
-			node.setAttribute("fill","none");			
-			wrapper.appendChild(node);
-
-			node = document.createElementNS( context.root.namespaceURI, "path");
-			node.setAttribute("d", "m 120.29029,157 v 130 0");	
-			node.setAttribute("stroke", aspects.POINTS_COLOR);		 
-			node.setAttribute("stroke-width", aspects.POINTS_STROKE);
-			node.setAttribute("fill","none");			
-			wrapper.appendChild(node);
-
-			node = document.createElementNS( context.root.namespaceURI, "path");
-			node.setAttribute("d", "m 110.29029,157 v 130 0");	
-			node.setAttribute("stroke", aspects.POINTS_COLOR);		 
-			node.setAttribute("stroke-width", aspects.POINTS_STROKE);
-			node.setAttribute("fill","none");			
-			wrapper.appendChild(node);
-
-			node = document.createElementNS( context.root.namespaceURI, "path");
-			node.setAttribute("d", "m 90.290291,157 v 130 0");	
-			node.setAttribute("stroke", aspects.POINTS_COLOR);		 
-			node.setAttribute("stroke-width", aspects.POINTS_STROKE);
-			node.setAttribute("fill","none");			
-			wrapper.appendChild(node);
-
-			node = document.createElementNS( context.root.namespaceURI, "path");
-			node.setAttribute("d", "m 80.290291,157 v 130 0");	
-			node.setAttribute("stroke", aspects.POINTS_COLOR);		 
-			node.setAttribute("stroke-width", aspects.POINTS_STROKE);
-			node.setAttribute("fill","none");			
-			wrapper.appendChild(node);
-
-			node = document.createElementNS( context.root.namespaceURI, "path");
-			node.setAttribute("d", "m 70.290291,157 v 130 0");	
-			node.setAttribute("stroke", aspects.POINTS_COLOR);		 
-			node.setAttribute("stroke-width", aspects.POINTS_STROKE);
-			node.setAttribute("fill","none");			
-			wrapper.appendChild(node);
-
-			node = document.createElementNS( context.root.namespaceURI, "path");
-			node.setAttribute("d", "m 60.290291,157.00017 v 130 0");	
-			node.setAttribute("stroke", aspects.POINTS_COLOR);		 
-			node.setAttribute("stroke-width", aspects.POINTS_STROKE);
-			node.setAttribute("fill","none");			
-			wrapper.appendChild(node);
-
-			node = document.createElementNS( context.root.namespaceURI, "path");
-			node.setAttribute("d", "m 50.290291,157 v 130 0");	
-			node.setAttribute("stroke", aspects.POINTS_COLOR);		 
-			node.setAttribute("stroke-width", aspects.POINTS_STROKE);
-			node.setAttribute("fill","none");			
-			wrapper.appendChild(node);
-
-			node = document.createElementNS( context.root.namespaceURI, "path");
-			node.setAttribute("d", "m 40.290291,157.00017 v 130 0");	
-			node.setAttribute("stroke", aspects.POINTS_COLOR);		 
-			node.setAttribute("stroke-width", aspects.POINTS_STROKE);
-			node.setAttribute("fill","none");			
-			wrapper.appendChild(node);
-
-			node = document.createElementNS( context.root.namespaceURI, "path");
-			node.setAttribute("d", "m 40.290291,157.00017 v 130 0");	
-			node.setAttribute("stroke", aspects.POINTS_COLOR);		 
-			node.setAttribute("stroke-width", aspects.POINTS_STROKE);
-			node.setAttribute("fill","none");			
-			wrapper.appendChild(node);
-
-			node = document.createElementNS( context.root.namespaceURI, "path");
-			node.setAttribute("d", "m 30.290291,157 v 130 0");	
-			node.setAttribute("stroke", aspects.POINTS_COLOR);		 
-			node.setAttribute("stroke-width", aspects.POINTS_STROKE);
-			node.setAttribute("fill","none");			
-			wrapper.appendChild(node);
-
-			node = document.createElementNS( context.root.namespaceURI, "path");
-			node.setAttribute("d", "m 0.2902913,157 v 130 0");	
-			node.setAttribute("stroke", aspects.POINTS_COLOR);		 
-			node.setAttribute("stroke-width", aspects.POINTS_STROKE);
-			node.setAttribute("fill","none");			
-			wrapper.appendChild(node);
-
-			node = document.createElementNS( context.root.namespaceURI, "path");
-			node.setAttribute("d", "m 130.29029,157 v 130 0");	
-			node.setAttribute("stroke", aspects.POINTS_COLOR);		 
-			node.setAttribute("stroke-width", aspects.POINTS_STROKE);
-			node.setAttribute("fill","none");			
-			wrapper.appendChild(node);
-											
-		return wrapper;
-	};	
-
 }( window.aspects = window.aspects || {}));
 
 //## CHART ###################################
@@ -1648,8 +1441,6 @@
 	aspects.GridAspects.prototype.draw = function( data ){
 												
 		var drawAspects = new aspects.DrawAspects(this.paper, data);
-		drawAspects.drawGrid();									
-										 							
 		return drawAspects;
 	 };
 	 	
@@ -1818,16 +1609,6 @@ case aspects.CONJUNCTION:
 		return this;
 	};
 	
-	/**
-	 * Draw background
-	 */
-	
-	aspects.DrawAspects.prototype.drawGrid = function(){				
-		var universe = this.universe;	
-		var wrapper = aspects.utils.getEmptyWrapper( universe, aspects.ID_CHART + "-" + aspects.ID_BG);	
-		var gaspects = this.paper.gridAspects(this.cx, this.cy);
-		wrapper.appendChild( gaspects );					
-	};
 	
 }( window.aspects = window.aspects || {}));
 
