@@ -2,11 +2,11 @@
  * 
  */
 (function(aspects) {
-	aspects.CONJUNCTION = "Conjunction";
-	aspects.SEXTILE = "Sextile";
-	aspects.SQUARE = "Square";
-	aspects.TRINE = "Trine";
-	aspects.OPPOSITION = "Opposition";
+	aspects.CONJUNCTION = "conjunction";
+	aspects.SEXTILE = "sextile";
+	aspects.SQUARE = "square";
+	aspects.TRINE = "trine";
+	aspects.OPPOSITION = "opposition";
 	
 	// Color of lines in charts
 	//aspects.LINE_COLOR = "#333";
@@ -1364,6 +1364,24 @@
 		return line;
 	};
 	
+	/**
+	 * Draw a circle
+	 * 
+	 * @param {int} cx
+	 * @param {int} cy
+	 * @param {int} radius	
+	 * 
+	 * @return {SVGElement} circle
+	 */  
+	aspects.SVG.prototype.circle = function circle( cx, cy, radius){						            	 	            		
+		var circle = document.createElementNS( context.root.namespaceURI, "circle");
+		circle.setAttribute("cx", cx);	
+  	    circle.setAttribute("cy", cy);
+		circle.setAttribute("r", radius);
+		circle.setAttribute("fill", "none");							
+		return circle;
+	};
+	
 	/*
 	 * grid path
 	 * @private
@@ -1718,11 +1736,6 @@
 		
 		this.data = data;								
 		this.paper = paper; 
-		
-		// after calling this.drawPoints() it contains current position of point
-		this.locatedPoints = [];
-		this.rulerRadius = ((this.radius/aspects.INNER_CIRCLE_RADIUS_RATIO)/aspects.RULER_RADIUS);
-		this.pointRadius = this.radius - (this.radius/aspects.INNER_CIRCLE_RADIUS_RATIO + 2*this.rulerRadius + (aspects.PADDING * aspects.SYMBOL_SCALE));
 					
 		//@see aspects.Radix.prototype.aspects()
 		//@see aspects.Radix.prototype.setPointsOfInterest() 
@@ -1733,7 +1746,7 @@
 		this.paper.root.appendChild( this.universe );
 						
 		var planets = ["Sun", "Moon", "Mercury", "Venus", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto", "NNode", "SNode"];		
-		var divisiones = 13;
+		var divisiones = planets.length + 1;
 		var deltaY = Math.trunc((this.paper.height - 2* aspects.MARGIN) / divisiones);
 		var deltaX = Math.trunc((this.paper.width - 2* aspects.MARGIN) / divisiones);
 		var iniciX = aspects.MARGIN;
@@ -1747,27 +1760,58 @@
 		for (var i = 0; i < divisiones + 1; i++) {
 			line = this.paper.line(iniciX + deltaX * i, iniciY, iniciX + deltaX * i,  fiY, aspects.LINE_COLOR);
 			this.universe.appendChild(line);
-			//this.paper.root.appendChild( line);		
 		}		
 		//Eje Y
 		for (var i = 0; i < divisiones + 1; i++) {
 			line = this.paper.line(iniciX, iniciY + deltaY * i, fiX,  iniciY + deltaY * i, aspects.LINE_COLOR);
 			this.universe.appendChild(line);
-			//this.paper.root.appendChild( line);		
 		}
 		//Símbolos eje X
 		for (var i = 1; i < divisiones; i++) {
 			symbol = this.paper.getSymbol(planets[i-1], Math.trunc(deltaX/2) + iniciX + Math.trunc(deltaX) * i, Math.trunc(deltaY/2) + iniciY);
 			this.universe.appendChild(symbol);
-			//this.paper.root.appendChild( symbol);		
 		}		
 		//Símbolos eje Y
 		for (var i = 1; i < divisiones; i++) {
 			symbol = this.paper.getSymbol(planets[i-1], Math.trunc(deltaX/2) + iniciX, Math.trunc(deltaY/2) + iniciY + Math.trunc(deltaY) * i);
 			this.universe.appendChild(symbol);
-			//this.paper.root.appendChild( symbol);		
-		}		
+		}
+		//
+		for (var x = 0; x < planets.length; x++) {
+			var found = data.find(element => {
+				return element.point.name === planets[x];
+			});
+			var y = planets.findIndex(element => {
+				return element === found.toPoint.name;
+			});
+			var aspect = found.aspect.name;
+			var posX = (iniciX + deltaX) + Math.trunc(deltaX/2) + Math.trunc(deltaX) * x;
+			var posY = (iniciY + deltaY) + Math.trunc(deltaY/2) + Math.trunc(deltaY) * y;
+			symbol = this.paper.getSymbol(found.aspect.name, posX, posY);
+			this.universe.appendChild(symbol);
+		}
 			
+		/*
+		 
+case aspects.CONJUNCTION:		        
+		        return conjunction( x, y);		        
+		        break;
+		    case aspects.SEXTILE:		        
+		        return sextile( x, y);		        
+		        break;
+		   case aspects.SQUARE:		        
+		        return square( x, y);		        
+		        break;     
+		   case aspects.TRINE:		        
+		        return trine( x, y);		        
+		        break;	
+		   case aspects.OPPOSITION:		        
+		        return opposition( x, y);		        
+		        break;		 
+		  
+		  
+		  */
+		
 		
 		context = this;
 			
