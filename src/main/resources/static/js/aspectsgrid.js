@@ -338,17 +338,16 @@
 	 * @return {SVGPathElement} path
 	 */
 	function square( x, y ){
-		
+		var longitudLado = 30; // Tamaño cuadrado		
 		// center symbol
-		var xShift = -2; //px						
-		var yShift = -7; //px		
+		var xShift = -1 * Math.round(longitudLado/4); //px						
+		var yShift = -1 * Math.round(longitudLado/4); //px
 		x =  Math.round(x + (xShift * aspects.SYMBOL_SCALE));
 		y =  Math.round(y + (yShift * aspects.SYMBOL_SCALE));
 		
 		var wrapper = document.createElementNS(context.root.namespaceURI, "g");
 		wrapper.setAttribute("transform", "translate(" + ( -x * (aspects.ASPECT_SYMBOL_SCALE - 1)) + "," + (-y * (aspects.ASPECT_SYMBOL_SCALE - 1)) + ") scale(" + aspects.ASPECT_SYMBOL_SCALE + ")");
 			var node = document.createElementNS( context.root.namespaceURI, "path");
-			var longitudLado = 30; // Tamaño cuadrado
 			node.setAttribute("d", "m" + x + ", " + y + " H " + (x + longitudLado) + " V " + (y + longitudLado) + " H " + x + " Z");				
 			node.setAttribute("stroke", aspects.POINTS_COLOR);		 
 			node.setAttribute("stroke-width", aspects.POINTS_STROKE);
@@ -370,8 +369,8 @@
 	function sextile( x, y ){
 		
 		// center symbol
-		var xShift = -2; //px						
-		var yShift = -7; //px		
+		var xShift = 44/2 - 8; //px						
+		var yShift = 0; //px		
 		x =  Math.round(x + (xShift * aspects.SYMBOL_SCALE));
 		y =  Math.round(y + (yShift * aspects.SYMBOL_SCALE));
 		
@@ -397,18 +396,18 @@
 	 * @return {SVGPathElement} path
 	 */
 	function trine( x, y ){
+		var trianguloBase = 30;
+		var alturaTriangulo = Math.abs(Math.round(trianguloBase * Math.cos(60)));
 
 		// center symbol
-		var xShift = -2; //px						
-		var yShift = -7; //px		
+		var xShift = -1 * Math.round(trianguloBase/4); //px						
+		var yShift = 1 *  Math.round(alturaTriangulo/4); //px		
 		x =  Math.round(x + (xShift * aspects.SYMBOL_SCALE));
 		y =  Math.round(y + (yShift * aspects.SYMBOL_SCALE));
 		
 		var wrapper = document.createElementNS(context.root.namespaceURI, "g");
 		wrapper.setAttribute("transform", "translate(" + ( -x * (aspects.ASPECT_SYMBOL_SCALE - 1)) + "," + (-y * (aspects.ASPECT_SYMBOL_SCALE - 1)) + ") scale(" + aspects.ASPECT_SYMBOL_SCALE + ")");
-			var Hx = x + 30; // Tamaño triángulo
-			var alturaTriangulo = Math.abs(Math.round((Hx - x) * Math.cos(60)));
-			var triangulo = "M" + x + ", " + y + " H " + Hx + " L " + (x + Math.round((Hx - x)/2)) + "," + (y - alturaTriangulo) + "Z";
+			var triangulo = "M" + x + ", " + y + " H " + (x + trianguloBase) + " L " + (x + Math.round(trianguloBase/2)) + "," + (y - alturaTriangulo) + "Z";
 			
 			var node = document.createElementNS( context.root.namespaceURI, "path");
 			node.setAttribute("d", triangulo);				
@@ -432,8 +431,8 @@
 	function conjunction( x, y ){
 		
 		// center symbol
-		var xShift = -2; //px						
-		var yShift = -7; //px		
+		var xShift = 0; //px						
+		var yShift = 0; //px		
 		x =  Math.round(x + (xShift * aspects.SYMBOL_SCALE));
 		y =  Math.round(y + (yShift * aspects.SYMBOL_SCALE));
 		
@@ -463,8 +462,8 @@
 	function opposition( x, y ){
 		
 		// center symbol
-		var xShift = -2; //px						
-		var yShift = -7; //px		
+		var xShift = -5; //px						
+		var yShift = 4; //px		
 		x =  Math.round(x + (xShift * aspects.SYMBOL_SCALE));
 		y =  Math.round(y + (yShift * aspects.SYMBOL_SCALE));
 		
@@ -1568,18 +1567,19 @@
 			this.universe.appendChild(symbol);
 		}
 		//
-		for (var x = 0; x < planets.length; x++) {
-			var found = data.find(element => {
-				return element.point.name === planets[x];
-			});
-			var y = planets.findIndex(element => {
-				return element === found.toPoint.name;
-			});
-			var aspect = found.aspect.name;
-			var posX = (iniciX + deltaX) + Math.trunc(deltaX/2) + Math.trunc(deltaX) * x;
-			var posY = (iniciY + deltaY) + Math.trunc(deltaY/2) + Math.trunc(deltaY) * y;
-			symbol = this.paper.getSymbol(found.aspect.name, posX, posY);
-			this.universe.appendChild(symbol);
+		for (var x = 0; x < planets.length -1; x++) {
+			for (var y = x + 1; y < planets.length; y++) {
+				var found = data.find(element => {
+					return (element.point.name === planets[x] && element.toPoint.name === planets[y]);
+				});
+				if (found !== undefined && found !== null) {
+					var aspect = found.aspect.name;
+					var posX = (iniciX + deltaX) + Math.trunc(deltaX/2) + Math.trunc(deltaX) * x;
+					var posY = (iniciY + deltaY) + Math.trunc(deltaY/2) + Math.trunc(deltaY) * y;
+					symbol = this.paper.getSymbol(found.aspect.name, posY, posX);
+					this.universe.appendChild(symbol);
+				}
+			}
 		}
 			
 		/*
