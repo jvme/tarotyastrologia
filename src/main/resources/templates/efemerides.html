@@ -143,6 +143,18 @@
 	</script>
 
 		<div class="row">
+			<div class="col">
+			LocalDateTime
+				<p th:text="${LocalDateTime}"></p>
+			LocalZonedDateTime
+				<p th:text="${LocalZonedDateTime}"></p>
+			ZoneOffset
+				<p th:text="${ZoneOffset}"></p>
+			UtcZonedDateTime
+				<p th:text="${UtcZonedDateTime}"></p>
+			</div>
+		</div>
+		<div class="row">
 			<div class="col" th:text="${planetEphemeris}">Planet Efemérides
 			</div>
 		</div>

@@ -3,6 +3,9 @@ package com.tarotyastrologia.controller;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
+import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -58,8 +61,19 @@ public class Maincontroller {
 			@RequestParam(name = "hh", required = true, defaultValue = "") String hh,
 			@RequestParam(name = "mn", required = true, defaultValue = "") String mn, Model model) {
 
-		
 		LocalDateTime event = LocalDateTime.parse(yy + "-" + mm + "-" + dd + "T" + hh + ":" + mn + ":00");
+		ZonedDateTime lzdt = ZonedDateTime.of(event, ZoneId.of("Europe/Madrid"));
+		ZoneOffset zoneOffset = lzdt.getOffset();
+		//replace Z to +00:00
+        String offset = zoneOffset.getId().replaceAll("Z", "+00:00");
+		ZonedDateTime utczdt = lzdt.withZoneSameInstant(ZoneId.of("UTC"));
+		
+		model.addAttribute("LocalDateTime", event.toString());
+		model.addAttribute("LocalZonedDateTime", lzdt.toString());
+		model.addAttribute("ZoneOffset", offset);
+		model.addAttribute("UtcZonedDateTime", utczdt);
+		
+		
 		Planet planetEphemeris = new PlanetBuilder(event)
 				//.planets()
 				.planet("Sun, Moon, Mercury, Venus, Mars, Jupiter, Saturn, Uranus, Neptune, Pluto, NNode")
