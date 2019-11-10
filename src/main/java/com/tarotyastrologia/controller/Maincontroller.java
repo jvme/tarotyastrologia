@@ -62,7 +62,7 @@ public class Maincontroller {
 			@RequestParam(name = "mn", required = true, defaultValue = "") String mn, Model model) {
 
 		LocalDateTime event = LocalDateTime.parse(yy + "-" + mm + "-" + dd + "T" + hh + ":" + mn + ":00");
-		ZonedDateTime lzdt = ZonedDateTime.of(event, ZoneId.of("Europe/Madrid"));
+		ZonedDateTime lzdt = ZonedDateTime.of(event, ZoneId.of("America/Buenos_Aires"));
 		ZoneOffset zoneOffset = lzdt.getOffset();
 		//replace Z to +00:00
         String offset = zoneOffset.getId().replaceAll("Z", "+00:00");
