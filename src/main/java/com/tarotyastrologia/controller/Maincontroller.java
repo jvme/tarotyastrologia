@@ -98,6 +98,11 @@ public class Maincontroller {
  				.build();
 		String jsoncuspEphemeris = cuspEphemeris.toJSON();		
 		
+		List<Double> newCusp = new ArrayList<Double>();
+		double cuspAnt = cuspEphemeris.getCusps().get(newCusp.size());
+		cuspEphemeris.getCusps().forEach(cusp -> {
+			newCusp.add(cuspAnt-cusp);
+		});
 /*
 		LocalDateTime ahora = LocalDateTime.now();
 		Planet planetEphemerisHoy = new PlanetBuilder(ahora).planets().topo(lon, lat, 0).build();
@@ -114,6 +119,12 @@ public class Maincontroller {
 		JSONObject planetsCusp = new JSONObject();
 		planetsCusp.put("planets", jsonPlanets.get("planets"));
 		planetsCusp.put("cusps", jsonCusp.get("cusps"));
+		
+		JSONObject jsonNewCusp = new JSONObject();
+		newCusp.forEach(cusp -> {
+			//jsonNewCusp.
+		});
+	//	planetsCusp.put("newCusp", newCusp.);
 		
 /*	
 		Convertor conPlanetsHoy = new Convertor(planetEphemerisHoy.getPlanets());
