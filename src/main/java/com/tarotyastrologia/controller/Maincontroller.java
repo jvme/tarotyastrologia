@@ -30,20 +30,7 @@ import swisseph.SweConst;
 
 @Controller
 public class Maincontroller {
-	aspects.SYMBOL_ARIES = "Aries";
-	aspects.SYMBOL_TAURUS = "Taurus";
-	aspects.SYMBOL_GEMINI= "Gemini";
-	aspects.SYMBOL_CANCER = "Cancer"; 
-	aspects.SYMBOL_LEO = "Leo"; 
-	aspects.SYMBOL_VIRGO = "Virgo"; 
-	aspects.SYMBOL_LIBRA = "Libra";  
-	aspects.SYMBOL_SCORPIO = "Scorpio";  
-	aspects.SYMBOL_SAGITTARIUS = "Sagittarius";
-	aspects.SYMBOL_CAPRICORN = "Capricorn"; 
-	aspects.SYMBOL_AQUARIUS = "Aquarius"; 
-	aspects.SYMBOL_PISCES = "Pisces";
-
-	
+		
 	// inject via application.properties
 	@Value("${welcome.message}")
 	private String message;
