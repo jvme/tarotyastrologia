@@ -1,12 +1,19 @@
 package com.tarotyastrologia.signosplanetas;
 
-import java.util.List;
-
-public class CuspidePlanetas {
+public class CuspideAngle {
 	Integer cuspideNumber;
 	Double cuspideAngle;
-	List<PlanetAngle> planetsAngles;
+
 	
+	public CuspideAngle() {
+	}
+	
+	public CuspideAngle(Integer cuspideNumber, Double cuspideAngle) {
+		super();
+		this.cuspideNumber = cuspideNumber;
+		this.cuspideAngle = cuspideAngle;
+	}
+
 	public Integer getCuspideNumber() {
 		return cuspideNumber;
 	}
@@ -19,12 +26,4 @@ public class CuspidePlanetas {
 	public void setCuspideAngle(Double cuspideAngle) {
 		this.cuspideAngle = cuspideAngle;
 	}
-	public List<PlanetAngle> getPlanetsAngles() {
-		return planetsAngles;
-	}
-	public void setPlanetsAngles(List<PlanetAngle> planetsAngles) {
-		this.planetsAngles = planetsAngles;
-	}
-	
-	
 }

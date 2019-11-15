@@ -9,6 +9,7 @@ import java.time.ZonedDateTime;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
@@ -17,6 +18,8 @@ import org.springframework.ui.Model;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import com.tarotyastrologia.signosplanetas.SignosPlanetas;
 
 import at.kugel.zodiac.TextHoroscop;
 import at.kugel.zodiac.house.HousePlacidus;
@@ -95,24 +98,11 @@ public class Maincontroller {
 		Cusp cuspEphemeris = new CuspBuilder(event)
 				.houses("Placidus") 	
   				.topo(lon, lat, 0)
-    			//.zodiac("Fagan Bradley")	
  				.build();
 		String jsoncuspEphemeris = cuspEphemeris.toJSON();		
 		
 		List<Double> newCusp = new ArrayList<Double>();
-		double cuspAnt = cuspEphemeris.getCusps().get(newCusp.size());
-		cuspEphemeris.getCusps().forEach(cusp -> {
-			newCusp.add(cuspAnt-cusp);
-		});
-/*
-		LocalDateTime ahora = LocalDateTime.now();
-		Planet planetEphemerisHoy = new PlanetBuilder(ahora).planets().topo(lon, lat, 0).build();
-		Cusp cuspEphemerisHoy = new CuspBuilder(ahora)
-  				.houses("Placidus")
-  				.topo(lon, lat, 0)
-    			//.zodiac("Fagan Bradley")	
- 				.build();
-*/		
+		
 		Convertor conPlanets = new Convertor(planetEphemeris.getPlanets());
 		Convertor conCusp = new Convertor(cuspEphemeris.getCusps());
 		JSONObject jsonPlanets = conPlanets.getJSON();
@@ -121,49 +111,14 @@ public class Maincontroller {
 		planetsCusp.put("planets", jsonPlanets.get("planets"));
 		planetsCusp.put("cusps", jsonCusp.get("cusps"));
 		
-		JSONObject jsonNewCusp = new JSONObject();
-		newCusp.forEach(cusp -> {
-			//jsonNewCusp.
-		});
-	//	planetsCusp.put("newCusp", newCusp.);
-		
-/*	
-		Convertor conPlanetsHoy = new Convertor(planetEphemerisHoy.getPlanets());
-		Convertor conCuspHoy = new Convertor(cuspEphemerisHoy.getCusps());
-		JSONObject jsonPlanetsHoy = conPlanetsHoy.getJSON();
-		JSONObject jsonCuspHoy = conCuspHoy.getJSON();
-		JSONObject planetsCuspHoy = new JSONObject();
-		planetsCuspHoy.put("planets", jsonPlanetsHoy.get("planets"));
-		planetsCuspHoy.put("cusps", jsonCuspHoy.get("cusps"));
-		
-	*/	
+		SignosPlanetas sp = new SignosPlanetas();
+		sp.calcSignosPlanetas(cuspEphemeris.getCusps(), planetEphemeris.getPlanets());
+		JSONObject spjson = sp.signosPlanetas2Json();
+	
 		model.addAttribute("planetEphemeris", jsonplanetEphemeris);
 		model.addAttribute("cuspEphemeris", jsoncuspEphemeris);
 		model.addAttribute("data", planetsCusp.toString());
-		//model.addAttribute("dataHoy", planetsCuspHoy.toString());
-
-
-		
-		
-		// get a horoscop instance
-		TextHoroscop horoscop = new TextHoroscop();
-		// set your desired planet position calculation algorithm
-		horoscop.setPlanet(new PlanetAA0());
-		// set your desired house system calculation algorithm
-		// may be anything from the at.kugel.zodiac.house package.
-		horoscop.setHouse(new HousePlacidus());
-		// set your user data time value
-		horoscop.setTime(Integer.parseInt(dd), Integer.parseInt(mm), Integer.parseInt(yy), Integer.parseInt(hh), Integer.parseInt(mm), 0, 0);
-		// set your user data location value
-		horoscop.setLocationDegree(2.17, 41.35);
-		// calculate the values
-		horoscop.calcValues();
-		// do something with the data, e.g. output raw data
-		String horoscoptxt = horoscop.toString();
-
-	    
-        model.addAttribute("horoscoptxt", horoscoptxt);
-        
+		model.addAttribute("spjson", spjson.toString());
         
         return "efemerides"; //view
     }
