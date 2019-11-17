@@ -19,6 +19,8 @@
 	// Radix chart element ID
 	aspects.ID_ASPECT_GRID = "aspectGrid";
 	
+	aspects.ID_CUSPIDES_ZODIAC ="cuspidesZodiac"
+	
 	aspects.ID_BG = "background";
 	
 	// Transit chart element ID
@@ -327,6 +329,7 @@
 		    	return unknownPoint;	 
 		}			
 	};
+
 
 	/*
 	 * Square path
@@ -1349,6 +1352,30 @@
 	};
 		
 	/**
+	 * Draw a text
+	 * 
+	 * @param {String} text
+	 * @param {int} x
+	 * @param {int} y
+	 * @param {String} size - etc. "13px"
+	 * @param {String} color - HTML rgb
+	 * 
+	 * @return {SVGElement} text
+	 */  
+	aspects.SVG.prototype.text = function text( txt, x, y, size, color){						            	 	            		
+		var text = document.createElementNS( context.root.namespaceURI, "text");
+		text.setAttribute("x", x);	
+  	    text.setAttribute("y", y);
+		text.setAttribute("font-size", size);
+		text.setAttribute("fill", color);
+		text.setAttribute("font-family", "serif");
+		text.setAttribute("dominant-baseline", "central");
+		text.appendChild( document.createTextNode( txt ));
+		text.setAttribute("transform", "translate(" + ( -x * (astrology.SYMBOL_SCALE - 1)) + "," + (-y * (astrology.SYMBOL_SCALE - 1)) + ") scale(" + astrology.SYMBOL_SCALE + ")");	
+		return text;
+	};
+	
+	/**
 	 * Draw line in circle
 	 * 
 	 * @param {int} x1
@@ -1421,7 +1448,23 @@
 		return this;
 	};
 	
-
+	aspects.CuspidesZodiac = function( elementId, width, height, settings ){
+		
+		if(settings){
+			Object.assign(aspects, settings);
+		}
+		
+		if (elementId && !document.getElementById( elementId )){
+			var paper = document.createElement('div');					
+			paper.setAttribute('id', elementId);			
+			document.body.appendChild( paper );
+		}
+										
+		this.cuspidesPaper = new aspects.SVG( elementId, width, height); 
+						
+		return this;
+	};
+	
 	 
 	/**
 	 * Display radix horoscope
@@ -1442,7 +1485,27 @@
 		var drawAspects = new aspects.DrawAspects(this.paper, data);
 		return drawAspects;
 	 };
-	 	
+
+	/**
+	 * Display radix horoscope
+	 * 
+	 * @param {Object} data
+	 * @example
+	 *	{
+	 *		"points":{"Moon":[0], "Sun":[30],  ... },
+	 *		"cusps":[300, 340, 30, 60, 75, 90, 116, 172, 210, 236, 250, 274] 
+	 *	}
+	 * 
+	 * @see https://github.com/Kibo/AstroWebService 
+	 * 
+	 * @return {aspects.Radix} radix
+	 */
+	aspects.CuspidesZodiac.prototype.drawCuspidesZodiac = function( data ){
+												
+		var drawAspects = new aspects.DrawCuspidesZodiac(this.cuspidesPaper, data);
+		return drawAspects;
+	 };
+	 
 	 /**
 	 * Scale chart
 	 * 
@@ -1452,50 +1515,6 @@
 		this.paper.root.setAttribute("transform", "translate(" + ( -this.cx * (factor - 1)) + "," + (-this.cy * (factor - 1)) + ") scale(" + factor + ")");		
 	};
 	
-	/**
-	 * Draw the symbol on the axis.
-	 * For debug only.
-	 * 	
-	 */
-	aspects.GridAspects.prototype.calibrate = function calibrate(){
-		var positions, circle, line;
-		var startRadius = 60;
-		
-		var planets = ["Sun", "Moon", "Mercury", "Venus", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto", "Chiron", "Lilith", "NNode"];
-		
-		for(var i = 0; i < planets.length; i++){		
-			positions = aspects.utils.getPointPosition(this.cx, this.cy, this.radius*2, i * 30 );
-			
-			line = this.paper.line(this.cx, this.cy, positions.x, positions.y);
-			line.setAttribute("stroke", aspects.LINE_COLOR);	
-			this.paper.root.appendChild( line);
-			
-			circle = this.paper.circle(this.cx, this.cy, startRadius + startRadius * i );
-			circle.setAttribute("stroke", aspects.LINE_COLOR);		 
-			circle.setAttribute("stroke-width", 1);
-			this.paper.root.appendChild( circle );
-						
-		}
-						
-		for(var n = 0, ln = planets.length; n < ln; n++){
-			
-			var radius = startRadius + startRadius*n; 
-			
-			for(var i = 0; i < 12; i++){
-				positions = aspects.utils.getPointPosition(this.cx, this.cy, radius, i * 30 );
-			
-				circle = this.paper.circle(positions.x, positions.y, aspects.COLLISION_RADIUS *aspects.SYMBOL_SCALE );
-				circle.setAttribute("stroke", "red");		 
-				circle.setAttribute("stroke-width", 1);
-				this.paper.root.appendChild( circle );
-							
-				this.paper.root.appendChild( this.paper.getSymbol( planets[n], positions.x, positions.y));	
-			}
-		
-		}
-											
-		return this;		
-	};
 		 		  
 }( window.aspects = window.aspects || {}));
 
@@ -1581,29 +1600,92 @@
 				}
 			}
 		}
+		context = this;
 			
-		/*
-		 
-case aspects.CONJUNCTION:		        
-		        return conjunction( x, y);		        
-		        break;
-		    case aspects.SEXTILE:		        
-		        return sextile( x, y);		        
-		        break;
-		   case aspects.SQUARE:		        
-		        return square( x, y);		        
-		        break;     
-		   case aspects.TRINE:		        
-		        return trine( x, y);		        
-		        break;	
-		   case aspects.OPPOSITION:		        
-		        return opposition( x, y);		        
-		        break;		 
-		  
-		  
-		  */
+		return this;
+	};
+	
+	/**
+	 * Radix charts.
+	 * 
+	 * @class
+	 * @public
+	 * @constructor
+ 	 * @param {aspects.SVG} paper 
+	 * @param {int} cx
+	 * @param {int} cy
+	 * @param {int} radius
+	 * @param {Object} data
+	 */
+	aspects.DrawCuspidesZodiac = function( paper, data ){
 		
+		// Validate data
+		//var status = aspects.utils.validate(data);		 		
+		//if( status.hasError ) {										
+		//	throw new Error( status.messages );
+		//}
 		
+		this.data = data;								
+		this.paper = paper; 
+					
+		//@see aspects.Radix.prototype.aspects()
+		//@see aspects.Radix.prototype.setPointsOfInterest() 
+        this.toPoints = JSON.parse(JSON.stringify(this.data)); // Clone object
+ 		
+		this.universeCuspidesZodiac = document.createElementNS(this.paper.root.namespaceURI, "g");
+		this.universeCuspidesZodiac.setAttribute('id', aspects.ID_CHART + "-" + aspects.ID_CUSPIDES_ZODIAC);
+		this.paper.root.appendChild( this.universeCuspidesZodiac );
+		//
+		var listCuspides = [];
+		
+		for (i=1; i < 13; i++) {
+			// Or, using array extras
+			Object.entries(data).forEach(([key, value]) => {
+				for (j=0; j < value.cuspides.length; j++) {
+					if (value.cuspides[j].cuspideNumber == i) {
+						listCuspides.push({
+							horoscopo: key.toString(),
+							angle: value.cuspides[j].cuspideAngle
+						});
+					}	
+				}
+			    console.log(key + ' ' + value); // "a 5", "b 7", "c 9"     
+			});
+		}
+		
+		var columnas = 3; // 3 columnas, 4 lineas
+		var filas = 12; // filas
+		var deltaY = Math.trunc((this.paper.height - 2 * aspects.MARGIN) / filas);
+		var deltaX = Math.trunc((this.paper.width - 2 * aspects.MARGIN) / columnas);
+		var iniciX = aspects.MARGIN;
+		var iniciY = aspects.MARGIN;
+		//var fiX = this.paper.width - aspects.MARGIN;
+		//var fiY = this.paper.height - aspects.MARGIN;
+		var fiX = iniciX + deltaX * columnas;
+		var fiY = iniciY + deltaY * filas;
+
+		//Eje X
+		for (var i = 0; i < columnas + 1; i++) {
+			line = this.paper.line(iniciX + deltaX * i, iniciY, iniciX + deltaX * i,  fiY, aspects.LINE_COLOR);
+			this.universeCuspidesZodiac.appendChild(line);
+		}		
+		//Eje Y
+		for (var i = 0; i < filas + 1; i++) {
+			line = this.paper.line(iniciX, iniciY + deltaY * i, fiX,  iniciY + deltaY * i, aspects.LINE_COLOR);
+			this.universeCuspidesZodiac.appendChild(line);
+		}
+		for (var i = 0; i < filas; i++) {
+		//Símbolos eje X
+			j = 1;
+			symbol = this.paper.getSymbol(listCuspides[j-1].horoscopo, Math.trunc(deltaX/2) + iniciX + Math.trunc(deltaX) * j, Math.trunc(deltaY/2) + iniciY);
+			this.universeCuspidesZodiac.appendChild(symbol);
+			j++;
+			symbol = this.paper.text( i+1, Math.trunc(deltaX/2) + iniciX + Math.trunc(deltaX) * j, Math.trunc(deltaY/2) + iniciY, 100, "#ffffff");
+			this.universeCuspidesZodiac.appendChild(symbol);
+			j++;
+			symbol = this.paper.text( listCuspides[j-1].cuspideAngle, Math.trunc(deltaX/2) + iniciX + Math.trunc(deltaX) * j, Math.trunc(deltaY/2) + iniciY, 100, "#ffffff");
+			this.universeCuspidesZodiac.appendChild(symbol);
+		}		
 		context = this;
 			
 		return this;

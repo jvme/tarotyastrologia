@@ -93,13 +93,10 @@ public class Maincontroller {
 		snode.add(nnode.get(1));
 		planetEphemeris.getPlanets().put("SNode", snode);
 		
-		String jsonplanetEphemeris = planetEphemeris.toJSON();
-
 		Cusp cuspEphemeris = new CuspBuilder(event)
 				.houses("Placidus") 	
   				.topo(lon, lat, 0)
  				.build();
-		String jsoncuspEphemeris = cuspEphemeris.toJSON();		
 		
 		List<Double> newCusp = new ArrayList<Double>();
 		
@@ -112,11 +109,9 @@ public class Maincontroller {
 		planetsCusp.put("cusps", jsonCusp.get("cusps"));
 		
 		SignosPlanetas sp = new SignosPlanetas();
-		sp.calcSignosPlanetas(cuspEphemeris.getCusps(), planetEphemeris.getPlanets());
-		JSONObject spjson = sp.signosPlanetas2Json();
+		sp.calcSignosCuspidesPlanetas(cuspEphemeris.getCusps(), planetEphemeris.getPlanets());
+		JSONObject spjson = sp.signosCuspidesPlanetas2Json();
 	
-		model.addAttribute("planetEphemeris", jsonplanetEphemeris);
-		model.addAttribute("cuspEphemeris", jsoncuspEphemeris);
 		model.addAttribute("data", planetsCusp.toString());
 		model.addAttribute("spjson", spjson.toString());
         

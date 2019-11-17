@@ -10,23 +10,23 @@ import org.json.JSONObject;
 public class SignosPlanetas {
 
 	//Map<String, CuspidePlanetas> signosPlanetas;
-	Map<String, CuspidesPlanetas> signosPlanetas;
+	Map<String, CuspidesPlanetas> signosCuspidesPlanetas;
 	List<String> signosZodiaco;
 	
 
 	public Map<String, CuspidesPlanetas> getSignosPlanetas() {
-		return signosPlanetas;
+		return signosCuspidesPlanetas;
 	}
 
-	public void setSignosPlanetas(Map<String, CuspidesPlanetas> signosPlanetas) {
-		this.signosPlanetas = signosPlanetas;
+	public void setSignosPlanetas(Map<String, CuspidesPlanetas> signosCuspidesPlanetas) {
+		this.signosCuspidesPlanetas = signosCuspidesPlanetas;
 	}
 	
 	/**
 	 * 
 	 */
 	public SignosPlanetas() {
-		signosPlanetas = new HashMap<String, CuspidesPlanetas>();
+		signosCuspidesPlanetas = new HashMap<String, CuspidesPlanetas>();
 		signosZodiaco = new ArrayList<String>();
 		signosZodiaco.add("Aries");
 		signosZodiaco.add("Taurus");
@@ -42,8 +42,7 @@ public class SignosPlanetas {
 		signosZodiaco.add("Pisces");
 	}
 
-	public void calcSignosPlanetas(List<Double> cuspPosition, Map<String, List<Double>> planetsPositions) {
-		int index = 0;
+	public void calcSignosCuspidesPlanetas(List<Double> cuspPosition, Map<String, List<Double>> planetsPositions) {
 		if (!(cuspPosition.size() > 0))
 		 return;
 		
@@ -58,6 +57,10 @@ public class SignosPlanetas {
 		for(int i = 0; i < signosZodiaco.size(); i++) {
 			Double angleInicial = zodiacListAngle.get(i);
 			Double angleFinal = zodiacListAngle.get((i+1)%12);
+			if (angleFinal - angleInicial < 0) {
+				angleFinal = angleInicial + 30;
+			}
+				
 			List<PlanetAngle> lst = new ArrayList<PlanetAngle>();
 			for (Map.Entry<String, List<Double>> entry: planetsPositions.entrySet()) {
 				String planet = entry.getKey();
@@ -72,20 +75,21 @@ public class SignosPlanetas {
 			}
 			List<CuspideAngle> lstCups = new ArrayList<CuspideAngle>();
 			for(int j = 0; j < cuspPosition.size(); j++) {
-				Double cusp = cuspPosition.get(j) + shift;
+				Double cusp = cuspPosition.get(j);
 				if (cusp >= angleInicial && cusp < angleFinal) {
-					Double gap = (cusp - angleInicial) > 0?cusp - angleInicial: cusp - angleInicial + 360;
+					Double gap = (cusp - angleInicial + shift ) > 0?cusp - angleInicial + shift: cusp - angleInicial + shift + 360;
 					CuspideAngle ca = new CuspideAngle(j+1, gap);
 					lstCups.add(ca);
 				}
+				//shift = cuspPosition.get((j + 1)%12);
 			}
 			CuspidesPlanetas cp = new CuspidesPlanetas(lstCups, lst);
-			signosPlanetas.put(signosZodiaco.get(i), cp);			
+			signosCuspidesPlanetas.put(signosZodiaco.get(i), cp);			
 		}
 	}
 	
-	public JSONObject signosPlanetas2Json() {
-		JSONObject spJson = new JSONObject(signosPlanetas);
+	public JSONObject signosCuspidesPlanetas2Json() {
+		JSONObject spJson = new JSONObject(signosCuspidesPlanetas);
 		return spJson;
 	}
 }

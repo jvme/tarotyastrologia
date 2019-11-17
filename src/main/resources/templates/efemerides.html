@@ -19,14 +19,6 @@
 			//var dataHoy = JSON.parse(/*[[${dataHoy}]]*/[]);
 			var chart = new astrology.Chart('paper', 800, 800);
 			var radix = chart.radix(data);
-			/*
-			radix.addPointsOfInterest({
-				"As" : [ data.cusps[0] ],
-				//"Ic" : [ data.cusps[3] ],
-				//"Ds" : [ data.cusps[6] ],
-				"Mc" : [ data.cusps[9] ]
-			});
-			*/
 			var aspects2 = radix.aspects();	
 			console.log(aspects);
 			
@@ -64,84 +56,141 @@
 			};
 
 			
-			for (var filaKey in tablaFila) {
-				tablaFila[filaKey] = tablaCol();				
-			}
-
-			var lasp = new astrology.AspectCalculator(radix.toPoints, astrology.ASPECTS).radix(data.planets);
-			lasp.forEach(function(lAsp) {
-				tablaFila[lAsp.point.name][lAsp.toPoint.name] = lAsp;
-			});
-
-			
-			var asp = new aspects.GridAspects('paper', 800, 800);
-			asp.draw(lasp);
-			
-			var table = document.createElement("table");
-			table.className="gridtable";
-			var thead = document.createElement("thead");
-			var tbody = document.createElement("tbody");
-			
-			var tr = document.createElement("tr");
-			var td = document.createElement("th");
-			tr.appendChild(td);
-			for (var filaKey in tablaFila) {
-				td = document.createElement("th");
-				td.appendChild(document.createTextNode(filaKey));
-				tr.appendChild(td);
-		    }
-		    thead.appendChild(tr);
-			table.appendChild(thead);
-			
-			
-			for (var filaKey in tablaFila) {
-				tr = document.createElement("tr");
-				td = document.createElement("td");
-				td.appendChild(document.createTextNode(filaKey));
-				tr.appendChild(td);
-				for (var columKey in tablaFila[filaKey]) {
-					td = document.createElement("td");
-					var contenido = tablaFila[filaKey][columKey];
-					var texto = "";
-					if (contenido.aspect != undefined) {
-						texto = "Aspecto:" + contenido.aspect.name 
-						+ " Precision:" + contenido.precision
-						+ " grados:" + contenido.aspect.degree
-						+ " orbit:" + contenido.aspect.orbit
-						+ " de: " + contenido.point.name
-						+ " a: " + contenido.toPoint.name;
-					} 
-					td.appendChild(document.createTextNode(texto));
-					tr.appendChild(td);
-				}
-				tbody.appendChild(tr);
-		    }
-			table.appendChild(tbody);
-			document.getElementById("aspectos").appendChild(table);		
-			
+			createTable1(tablaFila, tablaCol);
+			createTable2(tablaFila, tablaCol);
 		
-			
-			/*		
-			var chartHoy = new astrology.Chart('paperhoy', 800, 800);
-			var radixHoy = chartHoy.radix(data);
-			var transit = radixHoy.transit(dataHoy);
-			// data, duration in seconds, isReverse, callback
-			transit.animate( data, 6, false, function(){
-				console.log("Animation finished.");
-			});	
+			function createTable1(tablaFila, tablaCol) {
+				for (var filaKey in tablaFila) {
+					tablaFila[filaKey] = tablaCol();				
+				}
 
-			radixHoy.addPointsOfInterest({
-				"As" : [ data.cusps[0] ],
-				"Ic" : [ data.cusps[3] ],
-				"Ds" : [ data.cusps[6] ],
-				"Mc" : [ data.cusps[9] ]
-			});
-			radixHoy.aspects();
-*/
+				var lasp = new astrology.AspectCalculator(radix.toPoints, astrology.ASPECTS).radix(data.planets);
+				lasp.forEach(function(lAsp) {
+					tablaFila[lAsp.point.name][lAsp.toPoint.name] = lAsp;
+				});
+
+				
+				var asp = new aspects.GridAspects('aspects', 800, 800);
+				asp.draw(lasp);
+				
+				var mydata = JSON.parse(/*[[${spjson}]]*/[]);
+				
+				var asp2 = new aspects.CuspidesZodiac('aspects', 200, 600);
+				asp2.drawCuspidesZodiac(mydata);
+				
+				var table = document.createElement("table");
+				table.className="gridtable";
+				var thead = document.createElement("thead");
+				var tbody = document.createElement("tbody");
+				
+				var tr = document.createElement("tr");
+				var td = document.createElement("th");
+				tr.appendChild(td);
+				for (var filaKey in tablaFila) {
+					td = document.createElement("th");
+					td.appendChild(document.createTextNode(filaKey));
+					tr.appendChild(td);
+			    }
+			    thead.appendChild(tr);
+				table.appendChild(thead);
+				
+				
+				for (var filaKey in tablaFila) {
+					tr = document.createElement("tr");
+					td = document.createElement("td");
+					td.appendChild(document.createTextNode(filaKey));
+					tr.appendChild(td);
+					for (var columKey in tablaFila[filaKey]) {
+						td = document.createElement("td");
+						var contenido = tablaFila[filaKey][columKey];
+						var texto = "";
+						if (contenido.aspect != undefined) {
+							texto = "Aspecto:" + contenido.aspect.name 
+							+ " Precision:" + contenido.precision
+							+ " grados:" + contenido.aspect.degree
+							+ " orbit:" + contenido.aspect.orbit
+							+ " de: " + contenido.point.name
+							+ " a: " + contenido.toPoint.name;
+						} 
+						td.appendChild(document.createTextNode(texto));
+						tr.appendChild(td);
+					}
+					tbody.appendChild(tr);
+			    }
+				table.appendChild(tbody);
+				document.getElementById("aspectos").appendChild(table);				
+			}
 			
+			function createTable2(tablaFila, tablaCol) {
+				for (var filaKey in tablaFila) {
+					tablaFila[filaKey] = tablaCol();				
+				}
+
+				var lasp = new astrology.AspectCalculator(radix.toPoints, astrology.ASPECTS).radix(data.planets);
+				lasp.forEach(function(lAsp) {
+					tablaFila[lAsp.point.name][lAsp.toPoint.name] = lAsp;
+				});
+
+				var data2 = JSON.parse(/*[[${spjson}]]*/[]);
+
+								
+				var table = document.createElement("table");
+				table.className="gridtable";
+				var thead = document.createElement("thead");
+				var tbody = document.createElement("tbody");
+				
+				var tr = document.createElement("tr");
+				var td = document.createElement("th");
+				tr.appendChild(td);
+				for (var filaKey in tablaFila) {
+					td = document.createElement("th");
+					td.appendChild(document.createTextNode(filaKey));
+					tr.appendChild(td);
+			    }
+			    thead.appendChild(tr);
+				table.appendChild(thead);
+				
+				
+				for (var filaKey in tablaFila) {
+					tr = document.createElement("tr");
+					td = document.createElement("td");
+					td.appendChild(document.createTextNode(filaKey));
+					tr.appendChild(td);
+					for (var columKey in tablaFila[filaKey]) {
+						td = document.createElement("td");
+						var contenido = tablaFila[filaKey][columKey];
+						var texto = "";
+						if (contenido.aspect != undefined) {
+							texto = "Aspecto:" + contenido.aspect.name 
+							+ " Precision:" + contenido.precision
+							+ " grados:" + contenido.aspect.degree
+							+ " orbit:" + contenido.aspect.orbit
+							+ " de: " + contenido.point.name
+							+ " a: " + contenido.toPoint.name;
+						} 
+						td.appendChild(document.createTextNode(texto));
+						tr.appendChild(td);
+					}
+					tbody.appendChild(tr);
+			    }
+				table.appendChild(tbody);
+				document.getElementById("aspectos").appendChild(table);				
+			}
+					
 		};
 	</script>
-
+		<div class="row">
+			<div class="col" th:text="${spjson}">spjson</div>
+		</div>		
+		<div class="row">
+			<div class="col" id="paper"></div>
+		</div>
+		<div class="row">
+			<div class="col" id="aspects"></div>
+		</div>
+		<div class="row">
+			<div class="col" id="aspectos"></div>
+		</div>
 		<div class="row">
 			<div class="col">
 			LocalDateTime
@@ -153,22 +202,6 @@
 			UtcZonedDateTime
 				<p th:text="${UtcZonedDateTime}"></p>
 			</div>
-		</div>
-		<div class="row">
-			<div class="col" th:text="${planetEphemeris}">Planet Efemérides
-			</div>
-		</div>
-		<div class="row">
-			<div class="col" th:text="${cuspEphemeris}">Cusp Ephemeris</div>
-		</div>
-		<div class="row">
-			<div class="col" th:text="${spjson}">spjson</div>
-		</div>		
-		<div class="row">
-			<div class="col" id="paper"></div>
-		</div>
-		<div class="row">
-			<div class="col" id="aspectos"></div>
 		</div>
 		<div class="row">
 			<div class="col" id="paperhoy"></div>
