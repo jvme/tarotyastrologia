@@ -1,5 +1,5 @@
 /**
- * 
+ 
  */
 (function(aspects) {
 	aspects.CONJUNCTION = "conjunction";
@@ -20,6 +20,9 @@
 	aspects.ID_ASPECT_GRID = "aspectGrid";
 	
 	aspects.ID_CUSPIDES_ZODIAC ="cuspidesZodiac"
+		
+	aspects.ID_PLANETS_ZODIAC ="planetsZodiac"
+		
 	
 	aspects.ID_BG = "background";
 	
@@ -51,7 +54,7 @@
 	aspects.SIGNS_COLOR = "#000"; 
 	
 	// Signs strength of lines
-	aspects.SIGNS_STROKE = 0.5; //1.5
+	aspects.SIGNS_STROKE = 1.5; //1.5
 		
 	
 	// Chart margin
@@ -174,7 +177,7 @@
 	 * @return {SVG g}
 	 */
 
-	aspects.SVG.prototype.getSymbol = function( name, x, y){		
+	aspects.SVG.prototype.getSymbol = function( name, x, y, color, bgcolor){		
 		
 		switch(name) {
 			case aspects.CONJUNCTION:		        
@@ -235,40 +238,40 @@
 		        return snode( x, y);		        
 		        break;
 		    case aspects.SYMBOL_ARIES:		        
-		        return aries( x, y);		        
+		        return aries( x, y, color, bgcolor);		        
 		        break; 
 		    case aspects.SYMBOL_TAURUS:		        
-		        return taurus( x, y);		        
+		        return taurus( x, y, color, bgcolor);		        
 		        break;
 		    case aspects.SYMBOL_GEMINI:		        
-		        return gemini( x, y);		        
+		        return gemini( x, y, color, bgcolor);		        
 		        break;
 		    case aspects.SYMBOL_CANCER:		        
-		        return cancer( x, y);		        
+		        return cancer( x, y, color, bgcolor);		        
 		        break;
 		    case aspects.SYMBOL_LEO:		        
-		        return leo( x, y);		        
+		        return leo( x, y, color, bgcolor);		        
 		        break;
 		    case aspects.SYMBOL_VIRGO:		        
-		        return virgo( x, y);		        
+		        return virgo( x, y, color, bgcolor);		        
 		        break;
 		    case aspects.SYMBOL_LIBRA:		        
-		        return libra( x, y);		        
+		        return libra( x, y, color, bgcolor);		        
 		        break;
 		    case aspects.SYMBOL_SCORPIO:		        
-		        return scorpio( x, y);		        
+		        return scorpio( x, y, color, bgcolor);		        
 		        break;
 		    case aspects.SYMBOL_SAGITTARIUS:		        
-		        return sagittarius( x, y);		        
+		        return sagittarius( x, y, color, bgcolor);		        
 		        break;
 		    case aspects.SYMBOL_CAPRICORN:		        
-		        return capricorn( x, y);		        
+		        return capricorn( x, y, color, bgcolor);		        
 		        break;
 		    case aspects.SYMBOL_AQUARIUS:		        
-		        return aquarius( x, y);		        
+		        return aquarius( x, y, color, bgcolor);		        
 		        break; 
 		    case aspects.SYMBOL_PISCES:		        
-		        return pisces( x, y);		        
+		        return pisces( x, y, color, bgcolor);		        
 		        break;		        
 		    case aspects.SYMBOL_AS:		        
 		        return ascendant( x, y );		        
@@ -282,9 +285,6 @@
 		    case aspects.SYMBOL_IC:		        
 		        return immumCoeli( x, y );		        
 		        break;	
-		    case aspects.SYMBOL_IC:		        
-		        return immumCoeli( x, y );		        
-		        break;		    
 		    case aspects.SYMBOL_CUSP_1:		        
 		        return number1( x, y );		        
 		        break;
@@ -950,22 +950,27 @@
 	 * 
 	 * @return {SVGPathElement} path
 	 */
-	function aries( x, y ){
+	function aries( x, y, color, bgcolor ){
 		
 		// center symbol
 		var xShift = -9; //px						
 		var yShift = -2; //px		
 		x =  Math.round(x + (xShift * aspects.SYMBOL_SCALE));
 		y =  Math.round(y + (yShift * aspects.SYMBOL_SCALE));
-		
+		if (color == undefined) {
+			color = aspects.SIGNS_COLOR; 
+		}
+		if (bgcolor == undefined) {
+			bgcolor = "none";
+		}
 		var wrapper = document.createElementNS(context.root.namespaceURI, "g");
 		wrapper.setAttribute("transform", "translate(" + ( -x * (aspects.SYMBOL_SCALE - 1)) + "," + (-y * (aspects.SYMBOL_SCALE - 1)) + ") scale(" + aspects.SYMBOL_SCALE + ")");
 				
 			var node = document.createElementNS( context.root.namespaceURI, "path");
 			node.setAttribute("d", "m " + x + ", " + y + " -0.9,-0.9 0,-1.8 0.9,-1.8 1.8,-0.8999998 1.8,0 1.8,0.8999998 0.9,0.9 0.9,1.8 0.9,4.5 m -9,-5.4 1.8,-1.8 1.8,0 1.8,0.9 0.9,0.9 0.9,1.8 0.9,3.6 0,9.9 m 8.1,-12.6 0.9,-0.9 0,-1.8 -0.9,-1.8 -1.8,-0.8999998 -1.8,0 -1.8,0.8999998 -0.9,0.9 -0.9,1.8 -0.9,4.5 m 9,-5.4 -1.8,-1.8 -1.8,0 -1.8,0.9 -0.9,0.9 -0.9,1.8 -0.9,3.6 0,9.9");																						
-			node.setAttribute("stroke", aspects.SIGNS_COLOR);		 
-			node.setAttribute("stroke-width", aspects.SIGNS_STROKE);			
-			node.setAttribute("fill", "none");	
+			node.setAttribute("stroke", color);		 
+			node.setAttribute("stroke-width", aspects.SIGNS_STROKE);		
+			node.setAttribute("fill", bgcolor);	
 			
 			wrapper.appendChild(node);
 											
@@ -981,22 +986,28 @@
 	 * 
 	 * @return {SVGPathElement} path
 	 */
-	function taurus( x, y ){
+	function taurus( x, y, color, bgcolor){
 		
 		// center symbol
 		var xShift = -9; //px						
 		var yShift = -11; //px		
 		x =  Math.round(x + (xShift * aspects.SYMBOL_SCALE));
 		y =  Math.round(y + (yShift * aspects.SYMBOL_SCALE));
+		if (color == undefined) {
+			color = aspects.SIGNS_COLOR; 
+		}
+		if (bgcolor == undefined) {
+			bgcolor = "none";
+		}
 		
 		var wrapper = document.createElementNS(context.root.namespaceURI, "g");
 		wrapper.setAttribute("transform", "translate(" + ( -x * (aspects.SYMBOL_SCALE - 1)) + "," + (-y * (aspects.SYMBOL_SCALE - 1)) + ") scale(" + aspects.SYMBOL_SCALE + ")");
 				
 			var node = document.createElementNS( context.root.namespaceURI, "path");
 			node.setAttribute("d", "m " + x + ", " + y + " 1,4 1,2 2,2 3,1 4,0 3,-1 2,-2 1,-2 1,-4 m -18,0 1,3 1,2 2,2 3,1 4,0 3,-1 2,-2 1,-2 1,-3 m -11,8 -2,1 -1,1 -1,2 0,3 1,2 2,2 2,1 2,0 2,-1 2,-2 1,-2 0,-3 -1,-2 -1,-1 -2,-1 m -4,1 -2,1 -1,2 0,3 1,3 m 8,0 1,-3 0,-3 -1,-2 -2,-1");				
-			node.setAttribute("stroke", aspects.SIGNS_COLOR);		 
+			node.setAttribute("stroke", color);		 
 			node.setAttribute("stroke-width", aspects.SIGNS_STROKE);			
-			node.setAttribute("fill", "none");												
+			node.setAttribute("fill", bgcolor);												
 			wrapper.appendChild(node);
 											
 		return wrapper;
@@ -1011,22 +1022,28 @@
 	 * 
 	 * @return {SVGPathElement} path
 	 */
-	function gemini( x, y ){
+	function gemini( x, y, color, bgcolor){
 		
 		// center symbol
 		var xShift = -6; //px						
 		var yShift = -6; //px		
 		x =  Math.round(x + (xShift * aspects.SYMBOL_SCALE));
 		y =  Math.round(y + (yShift * aspects.SYMBOL_SCALE));
+		if (color == undefined) {
+			color = aspects.SIGNS_COLOR; 
+		}
+		if (bgcolor == undefined) {
+			bgcolor = "none";
+		}
 		
 		var wrapper = document.createElementNS(context.root.namespaceURI, "g");
 		wrapper.setAttribute("transform", "translate(" + ( -x * (aspects.SYMBOL_SCALE - 1)) + "," + (-y * (aspects.SYMBOL_SCALE - 1)) + ") scale(" + aspects.SYMBOL_SCALE + ")");
 				
 			var node = document.createElementNS( context.root.namespaceURI, "path");
 			node.setAttribute("d", "m " + x + ", " + y + " 0,11.546414 m 0.9622011,-10.5842129 0,9.6220117 m 7.6976097,-9.6220117 0,9.6220117 m 0.962201,-10.5842128 0,11.546414 m -13.4708165,-14.4330172 1.9244023,1.924402 1.9244024,0.9622012 2.8866038,0.9622011 3.848804,0 2.886604,-0.9622011 1.924402,-0.9622012 1.924403,-1.924402 m -17.3196215,17.3196207 1.9244023,-1.9244024 1.9244024,-0.9622011 2.8866038,-0.9622012 3.848804,0 2.886604,0.9622012 1.924402,0.9622011 1.924403,1.9244024");				
-			node.setAttribute("stroke", aspects.SIGNS_COLOR);		 
+			node.setAttribute("stroke", color);		 
 			node.setAttribute("stroke-width", aspects.SIGNS_STROKE);			
-			node.setAttribute("fill", "none");												
+			node.setAttribute("fill", bgcolor);												
 			wrapper.appendChild(node);
 											
 		return wrapper;
@@ -1041,22 +1058,27 @@
 	 * 
 	 * @return {SVGPathElement} path
 	 */
-	function cancer( x, y ){
+	function cancer( x, y, color, bgcolor ){
 		
 		// center symbol
 		var xShift = 9; //px						
 		var yShift = -9; //px		
 		x =  Math.round(x + (xShift * aspects.SYMBOL_SCALE));
 		y =  Math.round(y + (yShift * aspects.SYMBOL_SCALE));
-		
+		if (color == undefined) {
+			color = aspects.SIGNS_COLOR; 
+		}
+		if (bgcolor == undefined) {
+			bgcolor = "none";
+		}		
 		var wrapper = document.createElementNS(context.root.namespaceURI, "g");
 		wrapper.setAttribute("transform", "translate(" + ( -x * (aspects.SYMBOL_SCALE - 1)) + "," + (-y * (aspects.SYMBOL_SCALE - 1)) + ") scale(" + aspects.SYMBOL_SCALE + ")");
 				
 			var node = document.createElementNS( context.root.namespaceURI, "path");
 			node.setAttribute("d", "m " + x + ", " + y + " -15,0 -2,1 -1,2 0,2 1,2 2,1 2,0 2,-1 1,-2 0,-2 -1,-2 11,0 m -18,3 1,2 1,1 2,1 m 4,-4 -1,-2 -1,-1 -2,-1 m -4,15 15,0 2,-1 1,-2 0,-2 -1,-2 -2,-1 -2,0 -2,1 -1,2 0,2 1,2 -11,0 m 18,-3 -1,-2 -1,-1 -2,-1 m -4,4 1,2 1,1 2,1");				
-			node.setAttribute("stroke", aspects.SIGNS_COLOR);		 
+			node.setAttribute("stroke", color);		 
 			node.setAttribute("stroke-width", aspects.SIGNS_STROKE);			
-			node.setAttribute("fill", "none");												
+			node.setAttribute("fill", bgcolor);												
 			wrapper.appendChild(node);
 											
 		return wrapper;
@@ -1071,22 +1093,28 @@
 	 * 
 	 * @return {SVGPathElement} path
 	 */
-	function leo( x, y ){
+	function leo( x, y, color, bgcolor ){
 		
 		// center symbol
 		var xShift = -3; //px						
 		var yShift = 4; //px		
 		x =  Math.round(x + (xShift * aspects.SYMBOL_SCALE));
 		y =  Math.round(y + (yShift * aspects.SYMBOL_SCALE));
+		if (color == undefined) {
+			color = aspects.SIGNS_COLOR; 
+		}
+		if (bgcolor == undefined) {
+			bgcolor = "none";
+		}		
 		
 		var wrapper = document.createElementNS(context.root.namespaceURI, "g");
 		wrapper.setAttribute("transform", "translate(" + ( -x * (aspects.SYMBOL_SCALE - 1)) + "," + (-y * (aspects.SYMBOL_SCALE - 1)) + ") scale(" + aspects.SYMBOL_SCALE + ")");
 				
 			var node = document.createElementNS( context.root.namespaceURI, "path");
 			node.setAttribute("d", "m " + x + ", " + y + " -2,-1 -1,0 -2,1 -1,2 0,1 1,2 2,1 1,0 2,-1 1,-2 0,-1 -1,-2 -5,-5 -1,-2 0,-3 1,-2 2,-1 3,-1 4,0 4,1 2,2 1,2 0,3 -1,3 -3,3 -1,2 0,2 1,2 2,0 1,-1 1,-2 m -13,-5 -2,-3 -1,-2 0,-3 1,-2 1,-1 m 7,-1 3,1 2,2 1,2 0,3 -1,3 -2,3");				
-			node.setAttribute("stroke", aspects.SIGNS_COLOR);		 
+			node.setAttribute("stroke", color);	
 			node.setAttribute("stroke-width", aspects.SIGNS_STROKE);			
-			node.setAttribute("fill", "none");												
+			node.setAttribute("fill", bgcolor);												
 			wrapper.appendChild(node);
 											
 		return wrapper;
@@ -1101,22 +1129,28 @@
 	 * 
 	 * @return {SVGPathElement} path
 	 */
-	function virgo( x, y ){
+	function virgo( x, y, color, bgcolor ){
 		
 		// center symbol
 		var xShift = -9; //px						
 		var yShift = -5; //px		
 		x =  Math.round(x + (xShift * aspects.SYMBOL_SCALE));
 		y =  Math.round(y + (yShift * aspects.SYMBOL_SCALE));
+		if (color == undefined) {
+			color = aspects.SIGNS_COLOR; 
+		}
+		if (bgcolor == undefined) {
+			bgcolor = "none";
+		}
 		
 		var wrapper = document.createElementNS(context.root.namespaceURI, "g");
 		wrapper.setAttribute("transform", "translate(" + ( -x * (aspects.SYMBOL_SCALE - 1)) + "," + (-y * (aspects.SYMBOL_SCALE - 1)) + ") scale(" + aspects.SYMBOL_SCALE + ")");
 				
 			var node = document.createElementNS( context.root.namespaceURI, "path");
 			node.setAttribute("d", "m " + x + ", " + y + " 2.5894868,-2.5894868 1.7263245,2.5894868 0,9.4947847 m -2.5894868,-11.2211092 1.7263245,2.5894867 0,8.6316225 m 0.8631623,-9.4947847 2.5894867,-2.5894868 1.72632451,2.5894868 0,8.6316224 m -2.58948671,-10.3579469 1.72632447,2.5894867 0,7.7684602 m 0.86316224,-8.6316224 2.58948679,-2.5894868 1.7263244,2.5894868 0,13.8105959 m -2.5894867,-15.5369204 1.7263245,2.5894867 0,12.9474337 m 0.8631622,-13.8105959 2.5894868,-2.5894868 0.8631622,1.7263245 0.8631623,2.5894868 0,2.5894867 -0.8631623,2.58948673 -0.8631622,1.72632447 -1.7263245,1.7263245 -2.5894867,1.7263245 -4.3158113,1.7263245 m 7.7684602,-15.5369204 0.8631623,0.8631622 0.8631622,2.5894868 0,2.5894867 -0.8631622,2.58948673 -0.8631623,1.72632447 -1.7263245,1.7263245 -2.5894867,1.7263245 -3.452649,1.7263245");				
-			node.setAttribute("stroke", aspects.SIGNS_COLOR);		 
+			node.setAttribute("stroke", color);		 
 			node.setAttribute("stroke-width", aspects.SIGNS_STROKE);			
-			node.setAttribute("fill", "none");												
+			node.setAttribute("fill", bgcolor);												
 			wrapper.appendChild(node);
 											
 		return wrapper;
@@ -1131,22 +1165,28 @@
 	 * 
 	 * @return {SVGPathElement} path
 	 */
-	function libra( x, y ){
+	function libra( x, y, color, bgcolor ){
 		
 		// center symbol
 		var xShift = -4; //px						
 		var yShift = 3; //px		
 		x =  Math.round(x + (xShift * aspects.SYMBOL_SCALE));
 		y =  Math.round(y + (yShift * aspects.SYMBOL_SCALE));
+		if (color == undefined) {
+			color = aspects.SIGNS_COLOR; 
+		}
+		if (bgcolor == undefined) {
+			bgcolor = "none";
+		}
 		
 		var wrapper = document.createElementNS(context.root.namespaceURI, "g");
 		wrapper.setAttribute("transform", "translate(" + ( -x * (aspects.SYMBOL_SCALE - 1)) + "," + (-y * (aspects.SYMBOL_SCALE - 1)) + ") scale(" + aspects.SYMBOL_SCALE + ")");
 				
 			var node = document.createElementNS( context.root.namespaceURI, "path");
 			node.setAttribute("d", "m " + x + ", " + y + " -1.7142857,-0.8571429 -0.8571429,0 -1.7142857,0.8571429 -0.8571429,1.7142857 0,0.8571429 0.8571429,1.7142857 1.7142857,0.8571428 0.8571429,0 1.7142857,-0.8571428 0.8571428,-1.7142857 0,-0.8571429 -0.8571428,-1.7142857 -2.5714286,-3.42857143 -0.8571429,-2.57142857 0,-1.7142857 0.8571429,-2.5714286 1.7142857,-1.7142857 2.5714283,-0.8571429 3.428572,0 2.571428,0.8571429 1.714286,1.7142857 0.857143,2.5714286 0,1.7142857 -0.857143,2.57142857 -2.571429,3.42857143 -0.857142,1.7142857 0,0.8571429 0.857142,1.7142857 1.714286,0.8571428 0.857143,0 1.714286,-0.8571428 0.857143,-1.7142857 0,-0.8571429 -0.857143,-1.7142857 -1.714286,-0.8571429 -0.857143,0 -1.714286,0.8571429 m -10.2857139,-7.7142857 0.8571429,-1.7142857 1.7142857,-1.7142857 2.5714283,-0.8571429 3.428572,0 2.571428,0.8571429 1.714286,1.7142857 0.857143,1.7142857");				
-			node.setAttribute("stroke", aspects.SIGNS_COLOR);		 
+			node.setAttribute("stroke", color);	
 			node.setAttribute("stroke-width", aspects.SIGNS_STROKE);			
-			node.setAttribute("fill", "none");												
+			node.setAttribute("fill", bgcolor);												
 			wrapper.appendChild(node);
 											
 		return wrapper;
@@ -1161,22 +1201,27 @@
 	 * 
 	 * @return {SVGPathElement} path
 	 */
-	function scorpio( x, y ){
+	function scorpio( x, y, color, bgcolor ){
 		
 		// center symbol
 		var xShift = -9; //px						
 		var yShift = -4; //px		
 		x =  Math.round(x + (xShift * aspects.SYMBOL_SCALE));
 		y =  Math.round(y + (yShift * aspects.SYMBOL_SCALE));
-		
+		if (color == undefined) {
+			color = aspects.SIGNS_COLOR; 
+		}
+		if (bgcolor == undefined) {
+			bgcolor = "none";
+		}		
 		var wrapper = document.createElementNS(context.root.namespaceURI, "g");
 		wrapper.setAttribute("transform", "translate(" + ( -x * (aspects.SYMBOL_SCALE - 1)) + "," + (-y * (aspects.SYMBOL_SCALE - 1)) + ") scale(" + aspects.SYMBOL_SCALE + ")");
 				
 			var node = document.createElementNS( context.root.namespaceURI, "path");
 			node.setAttribute("d", "m " + x + ", " + y + " 2.3781101,-2.3781101 2.3781101,2.3781101 0,9.5124404 m -3.1708135,-11.0978471 2.3781101,2.3781101 0,8.719737 m 0.7927034,-9.5124404 2.3781101,-2.3781101 2.37811007,2.3781101 0,9.5124404 m -3.17081347,-11.0978471 2.3781101,2.3781101 0,8.719737 m 0.79270337,-9.5124404 2.37811013,-2.3781101 2.3781101,2.3781101 0,8.719737 1.5854067,1.5854068 m -4.7562202,-11.8905505 2.3781101,2.3781101 0,8.719737 1.5854067,1.5854067 2.3781101,-2.3781101");				
-			node.setAttribute("stroke", aspects.SIGNS_COLOR);					
+			node.setAttribute("stroke", color);	
 			node.setAttribute("stroke-width", aspects.SIGNS_STROKE);			
-			node.setAttribute("fill", "none");													
+			node.setAttribute("fill", bgcolor);													
 			wrapper.appendChild(node);
 													
 		return wrapper;
@@ -1191,22 +1236,28 @@
 	 * 
 	 * @return {SVGPathElement} path
 	 */
-	function sagittarius( x, y ){
+	function sagittarius( x, y, color, bgcolor ){
 		
 		// center symbol
 		var xShift = 7; //px						
 		var yShift = -9; //px		
 		x =  Math.round(x + (xShift * aspects.SYMBOL_SCALE));
 		y =  Math.round(y + (yShift * aspects.SYMBOL_SCALE));
+		if (color == undefined) {
+			color = aspects.SIGNS_COLOR; 
+		}
+		if (bgcolor == undefined) {
+			bgcolor = "none";
+		}
 		
 		var wrapper = document.createElementNS(context.root.namespaceURI, "g");
 		wrapper.setAttribute("transform", "translate(" + ( -x * (aspects.SYMBOL_SCALE - 1)) + "," + (-y * (aspects.SYMBOL_SCALE - 1)) + ") scale(" + aspects.SYMBOL_SCALE + ")");
 				
 			var node = document.createElementNS( context.root.namespaceURI, "path");
 			node.setAttribute("d", "m " + x + ", " + y + " -17.11444,17.11444 m 17.11444,-17.11444 -3.2089575,1.0696525 -6.417915,0 m 7.4875675,1.0696525 -3.2089575,0 -4.27861,-1.0696525 m 9.6268725,-1.0696525 -1.0696525,3.2089575 0,6.41791504 m -1.0696525,-7.48756754 0,3.2089575 1.0696525,4.27861004 m -8.55722,0 -7.4875675,0 m 6.417915,1.06965246 -3.2089575,0 -3.2089575,-1.06965246 m 7.4875675,0 0,7.48756746 m -1.0696525,-6.417915 0,3.2089575 1.0696525,3.2089575");				
-			node.setAttribute("stroke", aspects.SIGNS_COLOR);		 
+			node.setAttribute("stroke", color);		 
 			node.setAttribute("stroke-width", aspects.SIGNS_STROKE);			
-			node.setAttribute("fill", "none");												
+			node.setAttribute("fill", bgcolor);												
 			wrapper.appendChild(node);	
 											
 		return wrapper;
@@ -1221,21 +1272,27 @@
 	 * 
 	 * @return {SVGPathElement} path
 	 */
-	function capricorn( x, y ){
+	function capricorn( x, y, color, bgcolor ){
 		
 		// center symbol
 		var xShift = -9; //px						
 		var yShift = -3; //px		
 		x =  Math.round(x + (xShift * aspects.SYMBOL_SCALE));
 		y =  Math.round(y + (yShift * aspects.SYMBOL_SCALE));
-				
+		if (color == undefined) {
+			color = aspects.COLOR_BACKGROUND; 
+		}
+		if (bgcolor == undefined) {
+			bgcolor = "none";
+		}
+		
 		var wrapper = document.createElementNS(context.root.namespaceURI, "g");
 		wrapper.setAttribute("transform", "translate(" + ( -x * (aspects.SYMBOL_SCALE - 1)) + "," + (-y * (aspects.SYMBOL_SCALE - 1)) + ") scale(" + aspects.SYMBOL_SCALE + ")");		
 				
 			var node = document.createElementNS( context.root.namespaceURI, "path");
 			node.setAttribute("d", "m " + x + ", " + y + " 1.8047633,-3.6095267 4.5119084,9.0238168 m -4.5119084,-7.2190534 4.5119084,9.0238167 2.707145,-6.3166717 4.5119084,0 2.707145,-0.9023817 0.9023817,-1.8047633 0,-1.8047634 -0.9023817,-1.8047633 -1.8047634,-0.9023817 -0.9023816,0 -1.8047634,0.9023817 -0.9023817,1.8047633 0,1.8047634 0.9023817,2.707145 0.9023817,1.80476336 0.9023817,2.70714504 0,2.707145 -1.8047634,1.8047633 m 1.8047634,-16.2428701 -0.9023817,0.9023817 -0.9023817,1.8047633 0,1.8047634 1.8047634,3.6095267 0.9023816,2.707145 0,2.707145 -0.9023816,1.8047634 -1.8047634,0.9023816");				
 			//node.setAttribute("stroke", aspects.SIGNS_COLOR);		
-			node.setAttribute("stroke", aspects.COLOR_BACKGROUND);			
+			node.setAttribute("stroke", color);			
 			node.setAttribute("stroke-width", aspects.SIGNS_STROKE);			
 			node.setAttribute("fill", "none");												
 			wrapper.appendChild(node);
@@ -1252,22 +1309,28 @@
 	 * 
 	 * @return {SVGPathElement} path
 	 */
-	function aquarius( x, y ){
+	function aquarius( x, y, color, bgcolor ){
 		
 		// center symbol
 		var xShift = -8; //px						
 		var yShift = -2; //px		
 		x =  Math.round(x + (xShift * aspects.SYMBOL_SCALE));
 		y =  Math.round(y + (yShift * aspects.SYMBOL_SCALE));
+		if (color == undefined) {
+			color = aspects.SIGNS_COLOR; 
+		}
+		if (bgcolor == undefined) {
+			bgcolor = "none";
+		}
 		
 		var wrapper = document.createElementNS(context.root.namespaceURI, "g");
 		wrapper.setAttribute("transform", "translate(" + ( -x * (aspects.SYMBOL_SCALE - 1)) + "," + (-y * (aspects.SYMBOL_SCALE - 1)) + ") scale(" + aspects.SYMBOL_SCALE + ")");
 				
 			var node = document.createElementNS( context.root.namespaceURI, "path");
 			node.setAttribute("d", "m " + x + ", " + y + " 2.8866035,-2.8866035 3.8488047,1.9244023 m -4.8110059,-0.9622011 3.8488047,1.9244023 2.8866035,-2.8866035 2.8866035,1.9244023 m -3.84880467,-0.9622011 2.88660347,1.9244023 2.8866035,-2.8866035 1.9244024,1.9244023 m -2.8866035,-0.9622011 1.9244023,1.9244023 2.8866035,-2.8866035 m -17.319621,8.6598105 2.8866035,-2.88660348 3.8488047,1.92440238 m -4.8110059,-0.96220121 3.8488047,1.92440231 2.8866035,-2.88660348 2.8866035,1.92440238 m -3.84880467,-0.96220121 2.88660347,1.92440231 2.8866035,-2.88660348 1.9244024,1.92440238 m -2.8866035,-0.96220121 1.9244023,1.92440231 2.8866035,-2.88660348");				
-			node.setAttribute("stroke", aspects.SIGNS_COLOR);		 
+			node.setAttribute("stroke", color);		 
 			node.setAttribute("stroke-width", aspects.SIGNS_STROKE);			
-			node.setAttribute("fill", "none");													
+			node.setAttribute("fill", bgcolor);													
 			wrapper.appendChild(node);
 													
 		return wrapper;
@@ -1282,13 +1345,19 @@
 	 * 
 	 * @return {SVGPathElement} path
 	 */
-	function pisces( x, y ){
+	function pisces( x, y, color, bgcolor){
 		
 		// center symbol
 		var xShift = -8; //px						
 		var yShift = -8; //px		
 		x =  Math.round(x + (xShift * aspects.SYMBOL_SCALE));
 		y =  Math.round(y + (yShift * aspects.SYMBOL_SCALE));
+		if (color == undefined) {
+			color = aspects.COLOR_BACKGROUND; 
+		}
+		if (bgcolor == undefined) {
+			bgcolor = "none";
+		}
 		
 		var wrapper = document.createElementNS(context.root.namespaceURI, "g");
 		wrapper.setAttribute("transform", "translate(" + ( -x * (aspects.SYMBOL_SCALE - 1)) + "," + (-y * (aspects.SYMBOL_SCALE - 1)) + ") scale(" + aspects.SYMBOL_SCALE + ")");
@@ -1296,9 +1365,9 @@
 			var node = document.createElementNS( context.root.namespaceURI, "path");
 			node.setAttribute("d", "m " + x + ", " + y + " 4,2 2,2 1,3 0,3 -1,3 -2,2 -4,2 m 0,-17 3,1 2,1 2,2 1,3 m 0,3 -1,3 -2,2 -2,1 -3,1 m 16,-17 -3,1 -2,1 -2,2 -1,3 m 0,3 1,3 2,2 2,1 3,1 m 0,-17 -4,2 -2,2 -1,3 0,3 1,3 2,2 4,2 m -17,-9 18,0 m -18,1 18,0");				
 			//node.setAttribute("stroke", aspects.SIGNS_COLOR);		
-			node.setAttribute("stroke", aspects.COLOR_BACKGROUND);	
+			node.setAttribute("stroke", color);	
 			node.setAttribute("stroke-width", aspects.SIGNS_STROKE);			
-			node.setAttribute("fill", "none");												
+			node.setAttribute("fill", bgcolor);												
 			wrapper.appendChild(node);
 													
 		return wrapper;
@@ -1465,6 +1534,22 @@
 		return this;
 	};
 	
+	aspects.PlanetsZodiac = function( elementId, width, height, settings ){
+		
+		if(settings){
+			Object.assign(aspects, settings);
+		}
+		
+		if (elementId && !document.getElementById( elementId )){
+			var paper = document.createElement('div');					
+			paper.setAttribute('id', elementId);			
+			document.body.appendChild( paper );
+		}
+										
+		this.planetsPaper = new aspects.SVG( elementId, width, height); 
+						
+		return this;
+	};
 	 
 	/**
 	 * Display radix horoscope
@@ -1506,7 +1591,27 @@
 		return drawAspects;
 	 };
 	 
-	 /**
+	/**
+	 * Display radix horoscope
+	 * 
+	 * @param {Object} data
+	 * @example
+	 *	{
+	 *		"points":{"Moon":[0], "Sun":[30],  ... },
+	 *		"cusps":[300, 340, 30, 60, 75, 90, 116, 172, 210, 236, 250, 274] 
+	 *	}
+	 * 
+	 * @see https://github.com/Kibo/AstroWebService 
+	 * 
+	 * @return {aspects.Radix} radix
+	 */
+	aspects.PlanetsZodiac.prototype.drawPlanetsZodiac = function( data, planetasCuspides ){
+												
+		var drawAspects = new aspects.planetsZodiac(this.planetsPaper, data, planetasCuspides);
+		return drawAspects;
+	 };
+
+	/**
 	 * Scale chart
 	 * 
 	 * @param {int} factor 
@@ -1674,16 +1779,22 @@
 			line = this.paper.line(iniciX, iniciY + deltaY * i, fiX,  iniciY + deltaY * i, aspects.LINE_COLOR);
 			this.universeCuspidesZodiac.appendChild(line);
 		}
+
+        var anotherSimbols = [aspects.SYMBOL_AS, aspects.SYMBOL_IC, aspects.SYMBOL_DS, aspects.SYMBOL_MC]
 		for (var i = 0; i < filas; i++) {
 		//Símbolos eje X
-			j = 1;
-			symbol = this.paper.getSymbol(listCuspides[j-1].horoscopo, Math.trunc(deltaX/2) + iniciX + Math.trunc(deltaX) * j, Math.trunc(deltaY/2) + iniciY);
+			j = 0;
+			if ( i % 3 == 0) {
+				symbol = this.paper.text(anotherSimbols[Math.trunc(i / 3)], Math.trunc(deltaX/3) + iniciX + Math.trunc(deltaX) * j, Math.trunc(deltaY/2) + iniciY + Math.trunc(deltaY) * i, 25, "#000");				
+			} else {
+				symbol = this.paper.text(i+1, Math.trunc(deltaX/3) + iniciX + Math.trunc(deltaX) * j, Math.trunc(deltaY/2) + iniciY + Math.trunc(deltaY) * i, 25, "#000");				
+			}
 			this.universeCuspidesZodiac.appendChild(symbol);
 			j++;
-			symbol = this.paper.text( i+1, Math.trunc(deltaX/2) + iniciX + Math.trunc(deltaX) * j, Math.trunc(deltaY/2) + iniciY, 100, "#ffffff");
+			symbol = this.paper.text( listCuspides[i].angle.toFixed(2), Math.trunc(deltaX/3) + iniciX + Math.trunc(deltaX) * j, Math.trunc(deltaY/2) + iniciY + Math.trunc(deltaY) * i, 25, "#000");
 			this.universeCuspidesZodiac.appendChild(symbol);
 			j++;
-			symbol = this.paper.text( listCuspides[j-1].cuspideAngle, Math.trunc(deltaX/2) + iniciX + Math.trunc(deltaX) * j, Math.trunc(deltaY/2) + iniciY, 100, "#ffffff");
+			symbol = this.paper.getSymbol(listCuspides[i].horoscopo, Math.trunc(deltaX/2) + iniciX + Math.trunc(deltaX) * j, Math.trunc(deltaY/2) + iniciY + Math.trunc(deltaY) * i, "#000");
 			this.universeCuspidesZodiac.appendChild(symbol);
 		}		
 		context = this;
@@ -1691,6 +1802,100 @@
 		return this;
 	};
 	
+	/**
+	 * Radix charts.
+	 * 
+	 * @class
+	 * @public
+	 * @constructor
+ 	 * @param {aspects.SVG} paper 
+	 * @param {int} cx
+	 * @param {int} cy
+	 * @param {int} radius
+	 * @param {Object} data
+	 */
+	aspects.planetsZodiac = function( paper, data, planetasCuspides ){
+		
+		// Validate data
+		//var status = aspects.utils.validate(data);		 		
+		//if( status.hasError ) {										
+		//	throw new Error( status.messages );
+		//}
+		
+		this.data = data;								
+		this.paper = paper; 
+					
+		//@see aspects.Radix.prototype.aspects()
+		//@see aspects.Radix.prototype.setPointsOfInterest() 
+        this.toPoints = JSON.parse(JSON.stringify(this.data)); // Clone object
+ 		
+		this.universeCuspidesZodiac = document.createElementNS(this.paper.root.namespaceURI, "g");
+		this.universeCuspidesZodiac.setAttribute('id', aspects.ID_CHART + "-" + aspects.ID_PLANETS_ZODIAC);
+		this.paper.root.appendChild( this.universeCuspidesZodiac );
+		//
+		var planets = ["Sun", "Moon", "Mercury", "Venus", "Mars", "Jupiter", "Saturn", "Uranus", "Neptune", "Pluto", "NNode", "SNode"];		
+		//
+		var listPlanets = [];
+
+		for (i = 0; i < planets.length; i++) {
+			// Or, using array extras
+			Object.entries(data).forEach(([key, value]) => {
+				for (j = 0; j < value.planetas.length; j++) {
+					if (value.planetas[j].planet == planets[i]) {
+						listPlanets.push({
+							planet: value.planetas[j].planet,
+							angle: value.planetas[j].angle,
+							zodiac: key.toString(),
+							cuspide: 0//planetasCuspides[value.planetas[j].planet]
+						});
+					}	
+				}
+			    console.log(key + ' ' + value); // "a 5", "b 7", "c 9"     
+			});
+		}
+		
+		var columnas = 5; // 3 columnas, 4 lineas
+		var filas = 12; // filas
+		var deltaY = Math.trunc((this.paper.height - 2 * aspects.MARGIN) / filas);
+		var deltaX = Math.trunc((this.paper.width - 2 * aspects.MARGIN) / columnas);
+		var iniciX = aspects.MARGIN;
+		var iniciY = aspects.MARGIN;
+		//var fiX = this.paper.width - aspects.MARGIN;
+		//var fiY = this.paper.height - aspects.MARGIN;
+		var fiX = iniciX + deltaX * columnas;
+		var fiY = iniciY + deltaY * filas;
+
+		//Eje X
+		for (var i = 0; i < columnas + 1; i++) {
+			line = this.paper.line(iniciX + deltaX * i, iniciY, iniciX + deltaX * i,  fiY, aspects.LINE_COLOR);
+			this.universeCuspidesZodiac.appendChild(line);
+		}		
+		//Eje Y
+		for (var i = 0; i < filas + 1; i++) {
+			line = this.paper.line(iniciX, iniciY + deltaY * i, fiX,  iniciY + deltaY * i, aspects.LINE_COLOR);
+			this.universeCuspidesZodiac.appendChild(line);
+		}
+
+		for (var i = 0; i < filas; i++) {
+		//Símbolos eje X
+			j = 0;
+			symbol = this.paper.getSymbol(listPlanets[i].planet, Math.trunc(deltaX/2) + iniciX + Math.trunc(deltaX) * j, Math.trunc(deltaY/2) + iniciY + Math.trunc(deltaY) * i, "#000");
+			this.universeCuspidesZodiac.appendChild(symbol);
+			j++;
+			symbol = this.paper.text(listPlanets[i].angle.toFixed(2), Math.trunc(deltaX/4) + iniciX + Math.trunc(deltaX) * j, Math.trunc(deltaY/2) + iniciY + Math.trunc(deltaY) * i, 25, "#000");
+			this.universeCuspidesZodiac.appendChild(symbol);
+			j++;
+			symbol = this.paper.getSymbol(listPlanets[i].zodiac, Math.trunc(deltaX/2) + iniciX + Math.trunc(deltaX) * j, Math.trunc(deltaY/2) + iniciY + Math.trunc(deltaY) * i, "#000");
+			this.universeCuspidesZodiac.appendChild(symbol);
+			j++;
+			j++;
+			symbol = this.paper.text(listPlanets[i].cuspide, Math.trunc(deltaX/4) + iniciX + Math.trunc(deltaX) * j, Math.trunc(deltaY/2) + iniciY + Math.trunc(deltaY) * i, 25, "#000");
+			this.universeCuspidesZodiac.appendChild(symbol);
+		}		
+		context = this;
+			
+		return this;
+	};
 	
 }( window.aspects = window.aspects || {}));
 

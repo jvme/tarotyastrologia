@@ -111,9 +111,11 @@ public class Maincontroller {
 		SignosPlanetas sp = new SignosPlanetas();
 		sp.calcSignosCuspidesPlanetas(cuspEphemeris.getCusps(), planetEphemeris.getPlanets());
 		JSONObject spjson = sp.signosCuspidesPlanetas2Json();
+		JSONObject planetasCuspidesjson = sp.planetasCuspides2Json();
 	
 		model.addAttribute("data", planetsCusp.toString());
 		model.addAttribute("spjson", spjson.toString());
+		model.addAttribute("planetasCuspidesjson", planetasCuspidesjson.toString());
         
         return "efemerides"; //view
     }

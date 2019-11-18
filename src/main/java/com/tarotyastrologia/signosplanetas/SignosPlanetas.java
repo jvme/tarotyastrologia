@@ -11,6 +11,7 @@ public class SignosPlanetas {
 
 	//Map<String, CuspidePlanetas> signosPlanetas;
 	Map<String, CuspidesPlanetas> signosCuspidesPlanetas;
+	Map<String, Integer> planetasCuspides;
 	List<String> signosZodiaco;
 	
 
@@ -27,6 +28,7 @@ public class SignosPlanetas {
 	 */
 	public SignosPlanetas() {
 		signosCuspidesPlanetas = new HashMap<String, CuspidesPlanetas>();
+		planetasCuspides = new HashMap<String, Integer>();
 		signosZodiaco = new ArrayList<String>();
 		signosZodiaco.add("Aries");
 		signosZodiaco.add("Taurus");
@@ -86,10 +88,28 @@ public class SignosPlanetas {
 			CuspidesPlanetas cp = new CuspidesPlanetas(lstCups, lst);
 			signosCuspidesPlanetas.put(signosZodiaco.get(i), cp);			
 		}
+		Map<String, Integer> lstPlanetasCuspides = new HashMap<String, Integer>();
+		for (Map.Entry<String, List<Double>> entry: planetsPositions.entrySet()) {
+			String planet = entry.getKey();
+			List<Double> position = entry.getValue();
+			for(int j = 0; j < cuspPosition.size(); j++) {
+				Double cusp = cuspPosition.get(j);
+				if (position.get(0) >= cusp && position.get(0) < cuspPosition.get((j + 1) % 12) ) {
+					lstPlanetasCuspides.put(planet, j+1);
+				}
+				//shift = cuspPosition.get((j + 1)%12);
+			}
+		}
+		planetasCuspides = lstPlanetasCuspides;
 	}
 	
 	public JSONObject signosCuspidesPlanetas2Json() {
 		JSONObject spJson = new JSONObject(signosCuspidesPlanetas);
+		return spJson;
+	}
+	
+	public JSONObject planetasCuspides2Json() {
+		JSONObject spJson = new JSONObject(planetasCuspides);
 		return spJson;
 	}
 }
