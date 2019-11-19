@@ -78,7 +78,7 @@ public class SignosPlanetas {
 			List<CuspideAngle> lstCups = new ArrayList<CuspideAngle>();
 			for(int j = 0; j < cuspPosition.size(); j++) {
 				Double cusp = cuspPosition.get(j);
-				if (cusp >= angleInicial && cusp < angleFinal) {
+				if (cusp + shift >= angleInicial && cusp + shift < angleFinal) {
 					Double gap = (cusp - angleInicial + shift ) > 0?cusp - angleInicial + shift: cusp - angleInicial + shift + 360;
 					CuspideAngle ca = new CuspideAngle(j+1, gap);
 					lstCups.add(ca);

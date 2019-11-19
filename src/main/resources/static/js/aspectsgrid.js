@@ -1846,7 +1846,7 @@
 							planet: value.planetas[j].planet,
 							angle: value.planetas[j].angle,
 							zodiac: key.toString(),
-							cuspide: 0//planetasCuspides[value.planetas[j].planet]
+							cuspide: planetasCuspides[value.planetas[j].planet]
 						});
 					}	
 				}
