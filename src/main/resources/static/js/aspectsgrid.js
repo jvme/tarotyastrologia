@@ -145,14 +145,20 @@
 	 * @param {int} width
 	 * @param {int} height 
 	 */
-	aspects.SVG = function( elementId, width, height){		
+	aspects.SVG = function( elementId, width, height, vboxWidth, vboxHeight){		
 		var svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");		
 		svg.setAttributeNS("http://www.w3.org/2000/xmlns/", "xmlns:xlink", "http://www.w3.org/1999/xlink");
 		svg.setAttribute('style', "position: relative; overflow: hidden;");		
 		svg.setAttribute('version', "1.1");						 				
 		svg.setAttribute('width', width);
-		svg.setAttribute('height', height);	
-		svg.setAttribute('viewBox', "0 0 " + width + " " + " " + height);
+		svg.setAttribute('height', height);
+		if (vboxWidth === undefined) {
+			vboxWidth = width;
+		}
+		if (vboxHeight === undefined) {
+			vboxHeight = height;
+		}
+		svg.setAttribute('viewBox', "0 0 " + vboxWidth + " " + " " + vboxHeight);
 		document.getElementById( elementId ).appendChild( svg );
 		
 		var wrapper = document.createElementNS(svg.namespaceURI, "g");
@@ -1500,7 +1506,7 @@
 	 * @param {int} height
 	 * @param {Object} settings
 	 */
-	aspects.GridAspects = function( elementId, width, height, settings ){
+	aspects.GridAspects = function( elementId, width, height, vboxWidth, vboxHeight, settings ){
 		
 		if(settings){
 			Object.assign(aspects, settings);
@@ -1512,12 +1518,12 @@
 			document.body.appendChild( paper );
 		}
 										
-		this.paper = new aspects.SVG( elementId, width, height); 
+		this.paper = new aspects.SVG( elementId, width, height, vboxWidth, vboxHeight); 
 						
 		return this;
 	};
 	
-	aspects.CuspidesZodiac = function( elementId, width, height, settings ){
+	aspects.CuspidesZodiac = function( elementId, width, height, vboxWidth, vboxHeight, settings ){
 		
 		if(settings){
 			Object.assign(aspects, settings);
@@ -1529,12 +1535,12 @@
 			document.body.appendChild( paper );
 		}
 										
-		this.cuspidesPaper = new aspects.SVG( elementId, width, height); 
+		this.cuspidesPaper = new aspects.SVG( elementId, width, height, vboxWidth, vboxHeight); 
 						
 		return this;
 	};
 	
-	aspects.PlanetsZodiac = function( elementId, width, height, settings ){
+	aspects.PlanetsZodiac = function( elementId, width, height, vboxWidth, vboxHeight, settings ){
 		
 		if(settings){
 			Object.assign(aspects, settings);
@@ -1546,7 +1552,7 @@
 			document.body.appendChild( paper );
 		}
 										
-		this.planetsPaper = new aspects.SVG( elementId, width, height); 
+		this.planetsPaper = new aspects.SVG( elementId, width, height, vboxWidth, vboxHeight); 
 						
 		return this;
 	};

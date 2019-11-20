@@ -17,7 +17,7 @@
 		window.onload = function() {
 			var data = JSON.parse(/*[[${data}]]*/[]);
 			//var dataHoy = JSON.parse(/*[[${dataHoy}]]*/[]);
-			var chart = new astrology.Chart('paper', 600, 600);
+			var chart = new astrology.Chart('paper', 800, 800, 1200, 1200);
 			var radix = chart.radix(data);
 			var aspects2 = radix.aspects();	
 			console.log(aspects);
@@ -66,17 +66,17 @@
 				});
 
 				
-				var asp = new aspects.GridAspects('aspects', 800, 800);
+				var asp = new aspects.GridAspects('aspects', 800, 800, 1600, 1600);
 				asp.draw(lasp);
 				
 				var mydata = JSON.parse(/*[[${spjson}]]*/[]);
 				var planetasCuspides = JSON.parse(/*[[${planetasCuspidesjson}]]*/[]);
 				
 				
-				var asp2 = new aspects.CuspidesZodiac('aspectos', 400, 800);
+				var asp2 = new aspects.CuspidesZodiac('aspectos', 400, 800, 800, 1600);
 				asp2.drawCuspidesZodiac(mydata);
 				
-				var asp3 = new aspects.PlanetsZodiac('aspectos3', 500, 800);
+				var asp3 = new aspects.PlanetsZodiac('aspectos3', 500, 800, 1000, 1600);
 				asp3.drawPlanetsZodiac(mydata, planetasCuspides);
 				
 			}
@@ -140,8 +140,8 @@
 		};
 	</script>
 		<div class="row">
-			<div class="col" id="paper"></div>
-			<div class="col" id="aspects"></div>
+			<div class="col-6" id="paper"></div>
+			<div class="col-6" id="aspects"></div>
 		</div>
 		<div class="row">
 			<div class="col-6" id="aspectos"></div>
