@@ -17,8 +17,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.ResourceUtils;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.tarotyastrologia.model.DatosCalculoHoroscopo;
 import com.tarotyastrologia.signosplanetas.SignosPlanetas;
 
 import at.kugel.zodiac.TextHoroscop;
@@ -42,12 +45,18 @@ public class Maincontroller {
 
 	@GetMapping("/")
 	public String main(Model model) {
+		model.addAttribute("datosCalculoHoroscopo", new DatosCalculoHoroscopo());
 		model.addAttribute("message", message);
 		model.addAttribute("tasks", tasks);
 		model.addAttribute("module", "home");
 		return "index"; // view
 	}
 
+	@PostMapping("/")
+	public 	String mainSubmit(@ModelAttribute DatosCalculoHoroscopo datosCalculoHoroscopo) {
+		return  null;
+	}
+	
 	@GetMapping("/horoscopos")
 	public String horoscopos(Model model) {
 		model.addAttribute("message", message);

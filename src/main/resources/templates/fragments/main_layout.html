@@ -19,12 +19,7 @@
 	<div th:replace="fragments/header::header">
 	</div>
 	<main role="main" class="container">
-	<div class="row">
-		<div class="col-lg-8">
-		 	<div layout:fragment="content"></div>
-		</div>
-		<div class="col-lg-2"></div>
-	</div>
+ 	<div layout:fragment="content"></div>
 	<div th:replace="fragments/header::starter-template"></div>
 	<ol>
 		<li th:each="task : ${tasks}" th:text="${task}"></li>

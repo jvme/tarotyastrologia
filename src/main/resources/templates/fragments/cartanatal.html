@@ -41,31 +41,30 @@
 			<h5 class="card-header">Astrolog&iacute;a</h5>
 			<div class="card-body">
 				<img th:src="@{/img/cartanatal.jpg}" class="card-img">
-				<form>
+				<form action="#" th:action="@{/}" th:object="${datosCalculoHoroscopo}" method="post">
 					<div class="form-group">
 						<label for="nombreApellidos">Nombre y apellidos</label> <input
-							type="text" class="form-control" id="nombreApellidos"
+							type="text" class="form-control" id="nombreApellidos" th:field="*{nombreApellidos}"
 							aria-describedby="nombreHelp" placeholder="Nombre y apellidos">
 					</div>
 					<div class="form-group">
 						<label for="fechaNacimiento">Fecha de nacimiento</label>
-						<input type=text class="form-control" id="fechaNacimiento" placeholder="dd/mm/aaaa" />
+						<input type=text class="form-control" id="fechaNacimiento" th:field="*{fechaNacimiento}" placeholder="dd/mm/aaaa" />
 					</div>
 					<div class="form-group">
 						<label for="spinner">Hora y minutos</label>
-						
+						<input type=text class="form-control" id="horaMinutos" th:field="*{horaMinutos}" placeholder="hh:mm" />
 					</div>
 					<div class="form-group">
-						<label for="pais">País</label>
-						<input type=text class="form-control" id="pais" placeholder="hh:mm" />
+						<label for="pais">Pa&iacute;s</label>
+						<input type=text class="form-control" id="pais" th:field="*{pais}" placeholder="Pa&iacute;s" />
 					</div>
 					<div class="form-group">
 						<label for="horaMinutos">Ciudad</label>
-						<input type=text class="form-control" id="ciudad" placeholder="hh:mm" />
+						<input type=text class="form-control" id="ciudad" th:field="*{ciudad}" placeholder="Ciudad" />
 					</div>
 					<button type="submit" class="btn btn-primary">Ver carta</button>
 				</form>
-				<input type=text  id="spinner" placeholder="hh:mm" />
 			</div>
 		</div>
 	</div>

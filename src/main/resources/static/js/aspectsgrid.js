@@ -33,10 +33,10 @@
 	aspects.ID_ASPECTS = "aspects";
 	
 	//Scale of symbols	 
-	aspects.SYMBOL_SCALE = 1.5;
+	aspects.SYMBOL_SCALE = 1;
 		
 	//Scale of symbols	 
-	aspects.ASPECT_SYMBOL_SCALE = 1;
+	aspects.ASPECT_SYMBOL_SCALE = 0.5;
 
 	// BG color
 	aspects.COLOR_BACKGROUND = "#fff";		 
@@ -349,8 +349,8 @@
 	function square( x, y ){
 		var longitudLado = 30; // Tamaño cuadrado		
 		// center symbol
-		var xShift = -1 * Math.round(longitudLado/4); //px						
-		var yShift = -1 * Math.round(longitudLado/4); //px
+		var xShift = -1 * Math.round(longitudLado/4) + 1; //px						
+		var yShift = -1 * Math.round(longitudLado/4) + 2; //px
 		x =  Math.round(x + (xShift * aspects.SYMBOL_SCALE));
 		y =  Math.round(y + (yShift * aspects.SYMBOL_SCALE));
 		
@@ -378,7 +378,7 @@
 	function sextile( x, y ){
 		
 		// center symbol
-		var xShift = 44/2 - 8; //px						
+		var xShift = 44/2 - 13; //px						
 		var yShift = 0; //px		
 		x =  Math.round(x + (xShift * aspects.SYMBOL_SCALE));
 		y =  Math.round(y + (yShift * aspects.SYMBOL_SCALE));
@@ -442,8 +442,8 @@
 		// center symbol
 		var xShift = 0; //px						
 		var yShift = 0; //px		
-		x =  Math.round(x + (xShift * aspects.SYMBOL_SCALE));
-		y =  Math.round(y + (yShift * aspects.SYMBOL_SCALE));
+		x =  Math.round(x + (xShift * aspects.SYMBOL_SCALE)) + 2;
+		y =  Math.round(y + (yShift * aspects.SYMBOL_SCALE)) + 2;
 		
 		var wrapper = document.createElementNS(context.root.namespaceURI, "g");
 		wrapper.setAttribute("transform", "translate(" + ( -x * (aspects.ASPECT_SYMBOL_SCALE - 1)) + "," + (-y * (aspects.ASPECT_SYMBOL_SCALE - 1)) + ") scale(" + aspects.ASPECT_SYMBOL_SCALE + ")");
@@ -473,8 +473,8 @@
 		// center symbol
 		var xShift = -5; //px						
 		var yShift = 4; //px		
-		x =  Math.round(x + (xShift * aspects.SYMBOL_SCALE));
-		y =  Math.round(y + (yShift * aspects.SYMBOL_SCALE));
+		x =  Math.round(x + (xShift * aspects.SYMBOL_SCALE) + 2);
+		y =  Math.round(y + (yShift * aspects.SYMBOL_SCALE) - 2);
 		
 		var wrapper = document.createElementNS(context.root.namespaceURI, "g");
 		wrapper.setAttribute("transform", "translate(" + ( -x * (aspects.ASPECT_SYMBOL_SCALE - 1)) + "," + (-y * (aspects.ASPECT_SYMBOL_SCALE - 1)) + ") scale(" + aspects.ASPECT_SYMBOL_SCALE + ")");
@@ -928,10 +928,10 @@
 	function snode( x, y ){
 		
 		// center symbol
-		var xShift = -2; //px						
-		var yShift = 3; //px		
-		x =  Math.round(x + (xShift * aspects.SYMBOL_SCALE));
-		y =  Math.round(y + (yShift * aspects.SYMBOL_SCALE));
+		var xShift = 0; //px						
+		var yShift = 0; //px		
+		x =  Math.round(x + (xShift * aspects.SYMBOL_SCALE)) + 4;
+		y =  Math.round(y + (yShift * aspects.SYMBOL_SCALE)) - 6;
 		
 		var wrapper = document.createElementNS(context.root.namespaceURI, "g");
 		wrapper.setAttribute("transform", "translate(" + ( -x * (aspects.SYMBOL_SCALE - 1)) + "," + (-y * (aspects.SYMBOL_SCALE - 1)) + ") scale(" + aspects.SYMBOL_SCALE + ")");
