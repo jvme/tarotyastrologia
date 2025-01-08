@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,11 +23,15 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.tarotyastrologia.model.DatosCalculoHoroscopo;
+import com.tarotyastrologia.model.entities.Pais;
+import com.tarotyastrologia.model.entities.State;
+import com.tarotyastrologia.services.EntitiesService;
 import com.tarotyastrologia.signosplanetas.SignosPlanetas;
-
+/*
 import at.kugel.zodiac.TextHoroscop;
 import at.kugel.zodiac.house.HousePlacidus;
 import at.kugel.zodiac.planet.PlanetAA0;
+*/
 import cz.kibo.api.astrology.builder.CuspBuilder;
 import cz.kibo.api.astrology.builder.PlanetBuilder;
 import cz.kibo.api.astrology.domain.Cusp;
@@ -37,6 +42,9 @@ import swisseph.SweConst;
 @Controller
 public class Maincontroller {
 		
+	@Autowired
+	private EntitiesService entitiesService;
+	
 	// inject via application.properties
 	@Value("${welcome.message}")
 	private String message;
@@ -45,10 +53,13 @@ public class Maincontroller {
 
 	@GetMapping("/")
 	public String main(Model model) {
+		List<State> lst = entitiesService.getStates();
 		model.addAttribute("datosCalculoHoroscopo", new DatosCalculoHoroscopo());
 		model.addAttribute("message", message);
 		model.addAttribute("tasks", tasks);
 		model.addAttribute("module", "home");
+		model.addAttribute("paises", lst);
+	
 		return "index"; // view
 	}
 
@@ -133,6 +144,12 @@ public class Maincontroller {
     @GetMapping("/hello")
     public String mainWithParam(@RequestParam(name = "name", required = false, defaultValue = "") String name, Model model) {
         model.addAttribute("message", name);
+        return "welcome"; //view
+    }
+
+    @GetMapping("/paises")
+    public String paises(Model model) {
+    	model.addAttribute("paises", entitiesService.getPaises());
         return "welcome"; //view
     }
 
